@@ -24,6 +24,11 @@
                         'moon-light': '#1e293b', /* slate-800 */
                         'gold-accent': '#fbbf24', /* amber-400 */
                         'parchment': '#fef3c7', /* amber-100 */
+                        /* Hytale Theme Colors */
+                        'hytale-dark': '#022c22', /* emerald-950 */
+                        'hytale-light': '#064e3b', /* emerald-900 */
+                        'hytale-accent': '#2dd4bf', /* teal-400 */
+                        'hytale-stone': '#e2e8f0', /* slate-200 */
                     },
                     fontFamily: {
                         'cinzel': ['"Cinzel"', 'serif'],
@@ -54,7 +59,99 @@
             color: #fef3c7;
             overflow-x: hidden;
             cursor: none;
+            transition: background-color 1s ease, color 1s ease;
             /* Custom cursor everywhere */
+        }
+
+        /* --- Hytale Theme Override --- */
+        body.theme-hytale {
+            background-color: #022c22;
+            /* Deep Forest/Cave */
+            color: #ecfdf5;
+        }
+
+        body.theme-hytale .text-gold-accent {
+            color: #2dd4bf !important;
+            /* Teal/Cyan Magic */
+        }
+
+        body.theme-hytale .border-gold-accent {
+            border-color: #2dd4bf !important;
+        }
+
+        body.theme-hytale .bg-gold-accent {
+            background-color: #2dd4bf !important;
+        }
+
+        body.theme-hytale .cursor-dot {
+            background-color: #2dd4bf;
+            box-shadow: 0 0 15px 2px rgba(45, 212, 191, 0.8);
+        }
+
+        body.theme-hytale .cursor-ring {
+            border-color: rgba(45, 212, 191, 0.5);
+        }
+
+        /* Hytale Card Style */
+        body.theme-hytale .magic-card {
+            background: rgba(6, 78, 59, 0.6);
+            border-color: rgba(45, 212, 191, 0.3);
+        }
+
+        body.theme-hytale .magic-card::before {
+            border-top-color: #2dd4bf;
+            border-left-color: #2dd4bf;
+        }
+
+        body.theme-hytale .magic-card::after {
+            border-bottom-color: #2dd4bf;
+            border-right-color: #2dd4bf;
+        }
+
+        /* Switcher Styles */
+        .world-switch-container {
+            position: relative;
+            display: flex;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 9999px;
+            padding: 4px;
+            backdrop-filter: blur(4px);
+        }
+
+        .world-switch-btn {
+            padding: 8px 24px;
+            border-radius: 9999px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            color: #94a3b8;
+            transition: all 0.5s ease;
+            position: relative;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .world-switch-btn.active {
+            color: #0f172a;
+        }
+
+        .world-switch-bg {
+            position: absolute;
+            top: 4px;
+            bottom: 4px;
+            left: 4px;
+            width: calc(50% - 4px);
+            background: #fbbf24;
+            border-radius: 9999px;
+            z-index: 1;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.5s ease;
+        }
+
+        /* Hytale Switch State */
+        .world-switch-container.hytale-active .world-switch-bg {
+            transform: translateX(100%);
+            background: #2dd4bf;
         }
 
         /* --- Custom Cursor --- */
@@ -152,6 +249,117 @@
         .magic-card:hover {
             border-color: rgba(251, 191, 36, 0.8);
             box-shadow: 0 0 30px rgba(251, 191, 36, 0.15);
+        }
+
+        /* Sealed Card Style */
+        .card-sealed {
+            cursor: not-allowed;
+        }
+
+        .card-sealed .magic-card {
+            filter: grayscale(0.8) brightness(0.7);
+        }
+
+        .card-sealed:hover .magic-card {
+            box-shadow: none;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Lock Overlay */
+        .lock-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+            opacity: 0.8;
+            font-size: 3rem;
+            color: #94a3b8;
+        }
+
+        /* Shake Animation */
+        @keyframes shake {
+            0% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-5px);
+            }
+
+            40% {
+                transform: translateX(5px);
+            }
+
+            60% {
+                transform: translateX(-5px);
+            }
+
+            80% {
+                transform: translateX(5px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        .shake-anim {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        /* --- XP Orb Gimmick --- */
+        .xp-orb {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(circle, #facc15 0%, #a3e635 100%);
+            /* Yellow to Lime */
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            box-shadow: 0 0 10px #bef264;
+            opacity: 0.8;
+        }
+
+        /* --- Void Eye Gimmick --- */
+        .void-eye-container {
+            position: fixed;
+            z-index: 1;
+            /* Behind content but above BG */
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+
+        .void-eye {
+            width: 8px;
+            /* Small distant glowing eyes */
+            height: 20px;
+            background: #a5f3fc;
+            /* Cyan glow */
+            border-radius: 50%;
+            box-shadow: 0 0 15px #22d3ee;
+            display: inline-block;
+            margin: 0 10px;
+            animation: eye-blink 4s infinite;
+        }
+
+        @keyframes eye-blink {
+
+            0%,
+            48%,
+            52%,
+            100% {
+                transform: scaleY(1);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: scaleY(0.1);
+                opacity: 0.5;
+            }
         }
 
         .magic-card:hover::before,
@@ -453,6 +661,140 @@
                 transform: scaleY(0.4) rotate(360deg);
             }
         }
+
+        /* --- Genhin-Style Realm Transition --- */
+        #realm-transition-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            background: #0f172a;
+            /* Default Moon Dark */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #realm-transition-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .transition-loader {
+            width: 50px;
+            height: 50px;
+            border: 2px solid transparent;
+            border-top-color: #fbbf24;
+            border-radius: 50%;
+            animation: spin-loader 1s linear infinite;
+        }
+
+        @keyframes spin-loader {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* --- Ambient Spirit Particles (Minecraft) --- */
+        .spirit-particle {
+            position: fixed;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            box-shadow: 0 0 10px white;
+            z-index: 10;
+            /* Behind content but seen */
+            transition: opacity 1s;
+        }
+
+        /* --- Falling Leaves (Hytale) --- */
+        .leaf-particle {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: #4ade80;
+            /* bright green */
+            border-radius: 2px 8px;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 2;
+            box-shadow: 0 0 5px rgba(74, 222, 128, 0.4);
+        }
+
+        /* --- RPG Lore Tooltip --- */
+        #rpg-tooltip {
+            position: fixed;
+            z-index: 10000;
+            /* Top level */
+            pointer-events: none;
+            background: linear-gradient(180deg, rgba(16, 20, 50, 0.95) 0%, rgba(10, 12, 30, 0.98) 100%);
+            border: 2px solid #5d4f3b;
+            /* Dark gold/bronze */
+            box-shadow: 0 0 0 2px #181d40, 0 10px 30px rgba(0, 0, 0, 0.8);
+            padding: 16px;
+            border-radius: 4px;
+            color: #ddd;
+            width: 280px;
+            opacity: 0;
+            transition: opacity 0.2s, transform 0.1s;
+            font-family: 'Lato', sans-serif;
+        }
+
+        #rpg-tooltip.visible {
+            opacity: 1;
+        }
+
+        .tooltip-header {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        .tooltip-rarity {
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .tooltip-desc {
+            font-size: 0.85rem;
+            color: #aaa;
+            font-style: italic;
+            line-height: 1.4;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .tooltip-stat {
+            font-size: 0.8rem;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4px;
+        }
+
+        .tooltip-stat span:last-child {
+            color: #fbbf24;
+        }
+
+        .rarity-epic {
+            color: #d946ef;
+            text-shadow: 0 0 5px rgba(217, 70, 239, 0.4);
+        }
+
+        .rarity-legendary {
+            color: #fbbf24;
+            text-shadow: 0 0 5px rgba(251, 191, 36, 0.4);
+        }
+
+        .rarity-sealed {
+            color: #ef4444;
+            text-shadow: 0 0 5px rgba(239, 68, 68, 0.4);
+        }
     </style>
 </head>
 
@@ -463,17 +805,38 @@
         const CONFIG = {
             bgmUrl: "https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3",
             videos: [
-                { id: "wpESCBpZpIk", title: "Elven Town" },
-                { id: "DSENlYWq3GA", title: "Witch Village" },
-                { id: "1kc4fF9n9MU", title: "Blacksmith" },
-                { id: "-DBSjz4no0Y", title: "Land of Fairies" },
-                { id: "pXbP7KlbGno", title: "Steampunk City" }
+                // ONE - Minecraft
+                { id: "wpESCBpZpIk", title: "Elven Town", category: "minecraft", status: "available" },
+                { id: "DSENlYWq3GA", title: "Witch Village", category: "minecraft", status: "available" },
+                { id: "1kc4fF9n9MU", title: "Blacksmith", category: "minecraft", status: "available" },
+                { id: "-DBSjz4no0Y", title: "Land of Fairies", category: "minecraft", status: "available" },
+                { id: "pXbP7KlbGno", title: "Steampunk City", category: "minecraft", status: "available" },
+
+                // TWO - Hytale (Coming Soon)
+                { id: "o77MzDQT1cg", title: "COMING SOON", category: "hytale", status: "coming_soon" },
+                { id: "o77MzDQT1cg", title: "COMING SOON", category: "hytale", status: "coming_soon" },
+                { id: "o77MzDQT1cg", title: "COMING SOON", category: "hytale", status: "coming_soon" },
+                { id: "o77MzDQT1cg", title: "COMING SOON", category: "hytale", status: "coming_soon" }
             ]
         };
     </script>
 
     <!-- Layers -->
     <div id="lantern-layer"></div>
+    <div id="spirit-layer" class="fixed inset-0 pointer-events-none z-0"></div> <!-- Spirits/Leaves Container -->
+    <div id="rune-layer" class="fixed inset-0 pointer-events-none z-0" style="display: none;"></div>
+    <!-- Runes Removed -->
+
+    <!-- Realm Transition -->
+    <div id="realm-transition-overlay">
+        <div class="transition-loader"></div>
+    </div>
+
+    <!-- Mana Scroll Indicator -->
+    <div id="mana-progress-container">
+        <div id="mana-progress-bar"></div>
+    </div>
+
     <canvas id="constellation-canvas"></canvas>
 
     <!-- Observatory Overlay -->
@@ -596,6 +959,11 @@
                     <img src="https://images.unsplash.com/photo-1516339901601-2e1b62dc0c45?q=80&w=2571&auto=format&fit=crop"
                         class="w-full h-full object-cover opacity-60 scale-110" id="hero-bg" alt="Fantasy Sky">
                     <div class="absolute inset-0 bg-gradient-to-b from-moon-dark/50 via-transparent to-moon-dark"></div>
+
+                    <!-- Void Eyes Container (Spawns across section) -->
+                    <div id="void-eyes-layer"
+                        class="absolute inset-0 pointer-events-none overflow-hidden z-10 transition-opacity duration-1000 opacity-0">
+                    </div>
                 </div>
 
                 <!-- Hero Content -->
@@ -615,10 +983,17 @@
             <!-- Gallery Section -->
             <section class="relative py-24 px-6 md:px-20 bg-moon-dark z-20" id="works">
                 <div class="max-w-7xl mx-auto">
-                    <div class="mb-20 text-center">
-                        <i class="fa-solid fa-moon text-gold-accent text-2xl mb-4 animate-pulse"></i>
-                        <h2 class="font-cinzel text-4xl md:text-5xl text-white mb-2">Grand Archives</h2>
-                        <p class="font-lato text-gray-400 tracking-widest text-sm">COLLECTION OF DREAMS</p>
+                    <div class="mb-10 text-center flex flex-col items-center">
+                        <i class="fa-solid fa-moon text-gold-accent text-2xl mb-4 animate-pulse" id="section-icon"></i>
+                        <h2 class="font-cinzel text-4xl md:text-5xl text-white mb-6 transition-all duration-500"
+                            id="section-title">Grand Archives</h2>
+
+                        <!-- World Switcher -->
+                        <div class="world-switch-container" id="world-switcher">
+                            <div class="world-switch-bg"></div>
+                            <button class="world-switch-btn active" data-cat="minecraft">MINECRAFT</button>
+                            <button class="world-switch-btn" data-cat="hytale">HYTALE</button>
+                        </div>
                     </div>
 
                     <!-- Grid -->
@@ -769,56 +1144,189 @@
 
             /* --- 3. DYNAMIC CONTENT & TILT --- */
             const grid = document.getElementById('gallery-grid');
+            const switcher = document.getElementById('world-switcher');
+            const switchBtns = document.querySelectorAll('.world-switch-btn');
+            const sectionTitle = document.getElementById('section-title');
+            const sectionIcon = document.getElementById('section-icon');
+            const voidEyesLayer = document.getElementById('void-eyes-layer');
+            const transOverlay = document.getElementById('realm-transition-overlay');
 
-            CONFIG.videos.forEach(vid => {
-                const card = document.createElement('a');
-                card.href = `https://www.youtube.com/watch?v=${vid.id}`;
-                card.target = "_blank";
-                card.className = "magic-card-wrapper h-64 md:h-72 group block cursor-none"; // wrapper for perspective
-                card.innerHTML = `
-                    <div class="magic-card w-full h-full relative p-4 flex flex-col justify-end overflow-hidden rounded-lg">
-                        <!-- Video BG -->
-                        <div class="absolute inset-0 z-0 pointer-events-none">
-                            <img src="https://img.youtube.com/vi/${vid.id}/hqdefault.jpg" class="w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-500 group-hover:scale-110">
-                            <div class="absolute inset-0 bg-gradient-to-t from-moon-dark via-transparent to-transparent"></div>
-                        </div>
-                        
-                        <!-- Content -->
-                        <div class="relative z-10 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                            <h3 class="font-cinzel text-xl text-white group-hover:text-gold-accent transition-colors">${vid.title}</h3>
-                            <div class="h-[1px] w-0 bg-gold-accent group-hover:w-full transition-all duration-700 mt-2"></div>
-                            <div class="mt-2 text-[10px] text-gray-400 font-lato tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center gap-1">
-                                WATCH <i class="fa-solid fa-play text-[8px]"></i>
+            // 'eyeInterval' variable for Hytale gimmick (Moved here to avoid TDZ error)
+            let eyeInterval;
+
+            // Current State
+            let currentCategory = 'minecraft';
+
+            function renderGallery(category) {
+                // Clear Grid
+                grid.innerHTML = '';
+
+                // Filter
+                const filtered = CONFIG.videos.filter(v => v.category === category);
+
+                filtered.forEach((vid, index) => {
+                    const isSealed = vid.status === 'coming_soon';
+                    const card = document.createElement('a');
+
+                    if (!isSealed) {
+                        card.href = `https://www.youtube.com/watch?v=${vid.id}`;
+                        card.target = "_blank";
+                    } else {
+                        card.href = "#"; // Blind link
+                    }
+
+                    // Base classes
+                    let wrapperClass = "magic-card-wrapper h-64 md:h-72 group block opacity-0";
+                    if (isSealed) wrapperClass += " card-sealed";
+                    else wrapperClass += " cursor-none";
+
+                    card.className = wrapperClass;
+                    card.style.animation = `fadeInUp 0.6s ease forwards ${index * 0.1}s`;
+
+                    const thumbnail = category === 'hytale' && vid.id === 'o77MzDQT1cg'
+                        ? 'https://cdn.mos.cms.futurecdn.net/rJ6fFv7wJ8at8yJ8.jpg'
+                        : `https://img.youtube.com/vi/${vid.id}/hqdefault.jpg`;
+
+                    // Lock Overlay HTML
+                    const lockHTML = isSealed ? `<div class="lock-overlay"><i class="fa-solid fa-lock"></i></div>` : '';
+                    const hoverText = isSealed ? 'SEALED' : 'WATCH <i class="fa-solid fa-play text-[8px]"></i>';
+                    const hoverColor = isSealed ? 'text-gray-500' : 'text-gold-accent';
+                    const titleColor = isSealed ? 'text-gray-400' : 'text-white group-hover:text-gold-accent';
+
+                    card.innerHTML = `
+                        <div class="magic-card w-full h-full relative p-4 flex flex-col justify-end overflow-hidden rounded-lg">
+                            ${lockHTML}
+                            <div class="absolute inset-0 z-0 pointer-events-none">
+                                <img src="${thumbnail}" class="w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-500 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                            </div>
+                            <div class="relative z-10 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                                <h3 class="font-cinzel text-xl ${titleColor} transition-colors">${vid.title}</h3>
+                                <div class="h-[1px] w-0 bg-gold-accent group-hover:w-full transition-all duration-700 mt-2"></div>
+                                <div class="mt-2 text-[10px] text-gray-400 font-lato tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center gap-1">
+                                    ${hoverText}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `;
-                grid.appendChild(card);
+                    `;
+                    grid.appendChild(card);
 
-                // Tilt Logic
-                const inner = card.querySelector('.magic-card');
-                card.addEventListener('mousemove', (e) => {
-                    const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
+                    // Sealed Logic
+                    if (isSealed) {
+                        card.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            // Shake Effect
+                            const inner = card.querySelector('.magic-card');
+                            inner.classList.remove('shake-anim');
+                            void inner.offsetWidth; // trigger reflow
+                            inner.classList.add('shake-anim');
+                        });
+                    }
 
-                    const rotateX = ((y - centerY) / centerY) * -10; // Max 10deg
-                    const rotateY = ((x - centerX) / centerX) * 10;
+                    // Cards Tilt Effect RE-BIND
+                    const inner = card.querySelector('.magic-card');
+                    card.addEventListener('mousemove', (e) => {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
 
-                    gsap.to(inner, {
-                        rotateX: rotateX,
-                        rotateY: rotateY,
-                        duration: 0.5,
-                        ease: "power2.out"
+                        const rotateX = ((y - centerY) / centerY) * -10;
+                        const rotateY = ((x - centerX) / centerX) * 10;
+
+                        gsap.to(inner, {
+                            rotateX: rotateX,
+                            rotateY: rotateY,
+                            duration: 0.5,
+                            ease: "power2.out"
+                        });
                     });
-                });
 
-                card.addEventListener('mouseleave', () => {
-                    gsap.to(inner, { rotateX: 0, rotateY: 0, duration: 0.5 });
+                    card.addEventListener('mouseleave', () => {
+                        gsap.to(inner, { rotateX: 0, rotateY: 0, duration: 0.5 });
+                    });
+
+                }); // End forEach
+
+                // Update Theme UI (Called after transition in Switcher Logic)
+            }
+
+            // Switcher Logic (Genshin Style Transition)
+            switchBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const cat = btn.dataset.cat;
+                    if (cat === currentCategory) return;
+
+                    // 1. Start Transition
+                    // Set color based on destination
+                    if (cat === 'hytale') {
+                        transOverlay.style.background = '#022c22'; // Hytale Green
+                    } else {
+                        transOverlay.style.background = '#0f172a'; // Minecraft Blue
+                    }
+
+                    transOverlay.classList.add('active');
+
+                    setTimeout(() => {
+                        // 2. State Change (While Hidden)
+                        currentCategory = cat;
+
+                        // Update UI
+                        switchBtns.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+
+                        if (cat === 'hytale') {
+                            switcher.classList.add('hytale-active');
+                            updateTheme('hytale');
+                        } else {
+                            switcher.classList.remove('hytale-active');
+                            updateTheme('minecraft');
+                        }
+
+                        renderGallery(cat);
+
+                        // 3. End Transition
+                        setTimeout(() => {
+                            transOverlay.classList.remove('active');
+                        }, 600);
+
+                    }, 600); // Halfway point
                 });
             });
+
+            function updateTheme(cat) {
+                if (cat === 'minecraft') {
+                    document.body.classList.remove('theme-hytale');
+                    sectionTitle.innerText = "Grand Archives";
+                    sectionTitle.style.color = "white";
+                    sectionIcon.className = "fa-solid fa-moon text-gold-accent text-2xl mb-4 animate-pulse";
+                    stopVoidEyes();
+                    stopFallingLeaves(); // Stop leaves
+                    toggleSpirits(true); // Show spirits
+                } else {
+                    document.body.classList.add('theme-hytale');
+                    sectionTitle.innerText = "Adventure Log";
+                    sectionTitle.style.color = "#ecfdf5";
+                    sectionIcon.className = "fa-solid fa-leaf text-gold-accent text-2xl mb-4 animate-bounce";
+                    startVoidEyes();
+                    startFallingLeaves(); // Start leaves
+                    toggleSpirits(false); // Hide spirits
+                }
+            }
+
+            // Initial Render
+            renderGallery('minecraft');
+
+            // Add Keyframe for JS injection
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @keyframes fadeInUp {
+                    from { opacity: 0; transform: translateY(20px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+            `;
+            document.head.appendChild(style);
 
             /* --- 4. LANTERN & CONSTELLATION --- */
             const lantern = document.getElementById('lantern-layer');
@@ -995,8 +1503,87 @@
             window.addEventListener('click', (e) => {
                 // Don't burst if clicking interactive elements to avoid visual clutter? 
                 // No, burst everywhere is satisfying.
+
+                // XP ORB GIMMICK
+                createXPOrbs(e.clientX, e.clientY);
+
+                // Magic Burst (Visual)
                 createMagicBurst(e.clientX, e.clientY);
             });
+
+            /* --- XP ORB GIMMICK --- */
+            function createXPOrbs(x, y) {
+                const count = 5 + Math.floor(Math.random() * 5); // 5-10 orbs
+                for (let i = 0; i < count; i++) {
+                    const orb = document.createElement('div');
+                    orb.className = "xp-orb";
+                    document.body.appendChild(orb);
+
+                    // Random scatter
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = 20 + Math.random() * 50;
+                    const dx = Math.cos(angle) * speed;
+                    const dy = - Math.random() * 60 - 20; // Always pop up slightly
+
+                    gsap.fromTo(orb,
+                        { x: x, y: y, opacity: 1, scale: 0.5 },
+                        {
+                            x: x + dx,
+                            y: y + dy,
+                            opacity: 0,
+                            scale: 0.2,
+                            duration: 0.8 + Math.random() * 0.4,
+                            ease: "power2.out",
+                            onComplete: () => orb.remove()
+                        }
+                    );
+                }
+            }
+
+            /* --- VOID EYE GIMMICK (Hytale) --- */
+            // uses global 'voidEyesLayer' and 'eyeInterval'
+
+            function startVoidEyes() {
+                if (eyeInterval) clearInterval(eyeInterval);
+
+                // Fade in layer
+                if (voidEyesLayer) voidEyesLayer.style.opacity = 0.6;
+
+                eyeInterval = setInterval(() => {
+                    spawnVoidEye();
+                }, 4000); // Every 4 seconds
+            }
+
+            function stopVoidEyes() {
+                if (eyeInterval) clearInterval(eyeInterval);
+                if (voidEyesLayer) voidEyesLayer.style.opacity = 0;
+                // clear existing
+                if (voidEyesLayer) voidEyesLayer.innerHTML = '';
+            }
+
+            function spawnVoidEye() {
+                if (!voidEyesLayer) return;
+
+                const eyeSet = document.createElement('div');
+                eyeSet.className = "void-eye-container flex gap-1";
+
+                // Random Pos
+                const x = 10 + Math.random() * 80; // 10-90% width
+                const y = 10 + Math.random() * 80;
+
+                eyeSet.style.left = x + '%';
+                eyeSet.style.top = y + '%';
+
+                eyeSet.innerHTML = `<div class="void-eye"></div><div class="void-eye"></div>`;
+                voidEyesLayer.appendChild(eyeSet);
+
+                // Anim In/Out
+                gsap.to(eyeSet, {
+                    opacity: 1, duration: 1, onComplete: () => {
+                        gsap.to(eyeSet, { opacity: 0, duration: 1, delay: 2, onComplete: () => eyeSet.remove() });
+                    }
+                });
+            }
 
             function createMagicBurst(x, y) {
                 const burstCount = 8;
@@ -1251,8 +1838,172 @@
                 }
             }, 3000);
 
+            /* --- 8. SPIRIT PARTICLES (Ambient) --- */
+            function initSpirits() {
+                const layer = document.getElementById('spirit-layer');
+                const particleCount = 20;
+
+                for (let i = 0; i < particleCount; i++) {
+                    const p = document.createElement('div');
+                    p.className = 'spirit-particle';
+                    const size = 2 + Math.random() * 3;
+                    p.style.width = size + 'px';
+                    p.style.height = size + 'px';
+                    layer.appendChild(p);
+
+                    animateSpirit(p);
+                }
+            }
+
+            function animateSpirit(p) {
+                const maxX = window.innerWidth;
+                const maxY = window.innerHeight;
+
+                // Reset pos randomly
+                const startX = Math.random() * maxX;
+                const startY = Math.random() * maxY;
+
+                gsap.set(p, { x: startX, y: startY, opacity: 0 });
+
+                // Float
+                const duration = 10 + Math.random() * 20;
+                const destX = startX + (Math.random() - 0.5) * 200;
+                const destY = startY - 100 - Math.random() * 200; // Generally up
+
+                gsap.to(p, {
+                    x: destX,
+                    y: destY,
+                    opacity: Math.random() * 0.5 + 0.2, // Fade in to random opacity
+                    duration: duration * 0.2,
+                    yoyo: true, // Fade in then out? No complex.
+                    repeat: 1, // Hacky life cycle
+                    onComplete: () => {
+                        // Fade out
+                        gsap.to(p, {
+                            opacity: 0,
+                            duration: 2,
+                            onComplete: () => animateSpirit(p)
+                        });
+                    }
+                });
+
+                // Continuous Wiggle independent of float
+                gsap.to(p, {
+                    x: "+=20",
+                    duration: 4,
+                    yoyo: true,
+                    repeat: -1,
+                    ease: "sine.inOut"
+                });
+            }
+            initSpirits();
+
+            function toggleSpirits(show) {
+                const layer = document.getElementById('spirit-layer');
+                // We shouldn't clear, just toggle opacity class if we had one, or manual op
+                // For simplicity, let's just fade all spirits out
+                const spirits = document.querySelectorAll('.spirit-particle');
+                spirits.forEach(p => {
+                    gsap.to(p, { opacity: show ? Math.random() * 0.5 + 0.2 : 0, duration: 1 });
+                });
+            }
+
+            /* --- 8.5 FALLING LEAVES (Hytale Nature) --- */
+            let leaveInterval;
+
+            function startFallingLeaves() {
+                if (leaveInterval) clearInterval(leaveInterval);
+                // Spawn frequently
+                leaveInterval = setInterval(spawnLeaf, 300);
+            }
+
+            function stopFallingLeaves() {
+                if (leaveInterval) clearInterval(leaveInterval);
+                // Let existing fall out? No need to force kill, looks natural
+            }
+
+            function spawnLeaf() {
+                const layer = document.getElementById('spirit-layer'); // Reuse layer
+                const l = document.createElement('div');
+                l.className = 'leaf-particle';
+                layer.appendChild(l);
+
+                // Random Start X (and maybe slightly above viewport)
+                const startX = Math.random() * window.innerWidth;
+                const startY = -20;
+
+                gsap.set(l, { x: startX, y: startY, opacity: 0, rotation: Math.random() * 360 });
+
+                // Fall
+                const duration = 5 + Math.random() * 5;
+                const destX = startX + (Math.random() - 0.5) * 400; // Sway
+                const destY = window.innerHeight + 50;
+
+                // 1. Fall Motion
+                gsap.to(l, {
+                    y: destY,
+                    x: destX,
+                    rotation: "+=360",
+                    duration: duration,
+                    ease: "none", // Linear gravity-ish
+                    onComplete: () => l.remove()
+                });
+
+                // 2. Fade In
+                gsap.to(l, { opacity: 0.8, duration: 1 });
+
+                // 3. Sway motion
+                gsap.to(l, {
+                    x: "+=50",
+                    duration: 2,
+                    yoyo: true,
+                    repeat: -1,
+                    ease: "sine.inOut"
+                });
+            }
+
+            /* --- 9. STARDUST CURSOR TRAIL --- */
+            let lastX = 0;
+            let lastY = 0;
+            window.addEventListener('mousemove', (e) => {
+                const dist = Math.hypot(e.clientX - lastX, e.clientY - lastY);
+                // Limit spawn rate based on distance
+                if (dist > 5) {
+                    spawnStardust(e.clientX, e.clientY);
+                    lastX = e.clientX;
+                    lastY = e.clientY;
+                }
+            });
+
+            function spawnStardust(x, y) {
+                const p = document.createElement('div');
+                p.className = 'stardust-particle';
+                document.body.appendChild(p);
+
+                // Color based on theme
+                const color = currentCategory === 'hytale' ? '#2dd4bf' : '#fbbf24';
+                p.style.background = color;
+                p.style.boxShadow = `0 0 6px ${color}`;
+
+                // Random drift
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = Math.random() * 20;
+
+                gsap.fromTo(p,
+                    { x: x, y: y, opacity: 1, scale: Math.random() * 0.8 + 0.2 },
+                    {
+                        x: x + Math.cos(angle) * velocity,
+                        y: y + Math.sin(angle) * velocity,
+                        opacity: 0,
+                        duration: 0.5 + Math.random() * 0.5,
+                        ease: "power1.out",
+                        onComplete: () => p.remove()
+                    }
+                );
+            }
+
+            /* --- 10. PARALLAX FLOATING RUNES (REMOVED) --- */
+
         });
     </script>
 </body>
-
-```
