@@ -6,8 +6,7 @@
 
 > *"We build silence in a world of noise."*
 
-**Chill_CatMoon** is not just a portfolio website; it is an immersive **Digital Sanctuary**.  
-Showcasing cinematic Minecraft architecture through a lens of tranquility and magic, this project invites visitors to slow down, listen to the silence, and explore a world crafted from pixels and dreams.
+**Chill_CatMoon** is an immersive **Digital Sanctuary** designed to showcase cinematic Minecraft architecture through a lens of tranquility and magic. It invites visitors to slow down, listen to the silence, and explore a world crafted from pixels and dreams.
 
 ---
 
@@ -25,6 +24,7 @@ The crown jewel of this experience. By activating the **Observatory Telescope**,
 *   **Constellation Particles**: A starfield that reacts to your presence, forming connections as you explore.
 *   **3D Tilt Cards**: Gallery items float and rotate in 3D space, responding to your cursor's gravity.
 *   **Sonic Journey**: Integrated BGM player with volume control to set the perfect mood.
+*   **Dual Realms**: Switch between **Minecraft** (Night/Moon) and **Hytale** (Forest/Adventure) themes with a seamless Genshin-style transition.
 
 ---
 
