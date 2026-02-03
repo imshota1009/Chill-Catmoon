@@ -1228,6 +1228,48 @@
             .animate-ekg {
                 animation: ekg 2s linear infinite;
             }
+
+            /* --- Visual Hack (Intrusion) --- */
+            @keyframes glitch-anim-1 {
+                0% {
+                    clip-path: inset(20% 0 80% 0);
+                    transform: translate(-2px, 1px);
+                }
+
+                20% {
+                    clip-path: inset(60% 0 10% 0);
+                    transform: translate(2px, -1px);
+                }
+
+                40% {
+                    clip-path: inset(40% 0 50% 0);
+                    transform: translate(-2px, 2px);
+                }
+
+                60% {
+                    clip-path: inset(80% 0 5% 0);
+                    transform: translate(2px, -2px);
+                }
+
+                80% {
+                    clip-path: inset(10% 0 70% 0);
+                    transform: translate(-1px, 1px);
+                }
+
+                100% {
+                    clip-path: inset(30% 0 50% 0);
+                    transform: translate(1px, -1px);
+                }
+            }
+
+            .hack-glitch-effect {
+                animation: glitch-anim-1 0.2s infinite linear alternate-reverse;
+                filter: invert(1) hue-rotate(90deg) contrast(2);
+            }
+
+            .body-hack-active {
+                filter: invert(1) hue-rotate(180deg);
+            }
         }
     </style>
 </head>
@@ -1400,38 +1442,58 @@
     <!-- END INTRO OVERLAY -->
 
     <!-- CYBER EYE HUD LAYER (Ghost in the Shell) -->
-    <div id="cyber-hud-layer" class="fixed inset-0 pointer-events-none z-[9000] hidden md:block mix-blend-screen">
-        <!-- Top Left -->
-        <div class="absolute top-8 left-8 p-2 border-l border-t border-neon-cyan/50 parallax-hud" data-speed="0.02">
-            <div class="font-cyber text-[10px] text-neon-cyan tracking-widest mb-1">OPTICAL_TARGET</div>
-            <div class="text-xs text-white/80 font-mono" id="hud-coords">X:0000 Y:0000</div>
-        </div>
-        <!-- Top Right -->
-        <div class="absolute top-8 right-8 text-right parallax-hud" data-speed="0.03">
-            <div class="font-cyber text-[10px] text-neon-cyan tracking-widest mb-1">SYS_TIME</div>
-            <div class="text-xl text-white font-mono" id="hud-time">00:00:00</div>
-            <div class="w-24 h-px bg-neon-cyan/30 ml-auto mt-1"></div>
-        </div>
-        <!-- Bottom Left -->
-        <div class="absolute bottom-8 left-8 parallax-hud" data-speed="0.02">
-            <div class="flex items-end gap-2">
-                <div class="text-3xl text-cyber-purple font-cyber" id="hud-bpm">72</div>
-                <div class="text-[10px] text-neon-cyan mb-1">BPM</div>
+    <!-- CYBER EYE HUD LAYER -->
+    <!-- (Existing code) -->
+
+    <!-- VISUAL HACK OVERLAY -->
+    <div id="hack-overlay" class="fixed inset-0 z-[9999] pointer-events-none hidden mix-blend-difference bg-black">
+        <div class="absolute inset-0 flex flex-col justify-between p-10 overflow-hidden opacity-50">
+            <div class="font-mono text-xs text-green-500 break-all leading-none opacity-30 select-none">
+                0x4F 0x70 0x74 0x69 0x63 0x61 0x6C 0x20 0x4E 0x65 0x72 0x76 0x65 0x20 0x48 0x61 0x63 0x6B 0x65 0x64...
+                SYSTEM_OVERRIDE_DETECTED // UNAUTHORIZED_ACCESS // MEMORY_DUMP_INITIATED
+                00101010 11010101 00011100 11111111 00000000 10101010 11110000 01010101
             </div>
-            <div class="w-32 h-6 border border-neon-cyan/20 mt-1 relative overflow-hidden">
-                <div class="absolute inset-0 bg-neon-cyan/10 animate-pulse"></div>
-                <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none">
-                    <path d="M0,10 L10,10 L15,0 L20,20 L25,10 L128,10" fill="none" stroke="#22d3ee" stroke-width="1"
-                        vector-effect="non-scaling-stroke" class="animate-ekg" />
-                </svg>
+            <div class="font-mono text-xs text-green-500 break-all leading-none opacity-30 select-none text-right">
+                FATAL_ERROR: GHOST_LINE_CROSSBACK // PROTOCOL_2501
+                User.Sensation.Sight.Override(Target: "User", Duration: 200ms);
+                Warning: Cyberbrain Sclerosis Limit Reached.
             </div>
         </div>
-        <!-- Center Reticle (Follows Mouse with lag) -->
-        <div id="hud-reticle"
-            class="absolute w-12 h-12 border border-neon-cyan/30 rounded-full flex items-center justify-center -translate-x-1/2 -translate-y-1/2 opacity-50">
-            <div class="w-1 h-1 bg-neon-cyan rounded-full"></div>
-            <div class="absolute inset-0 border-t border-b border-neon-cyan/60 scale-75 animate-spin-slow"></div>
+        <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-2 bg-white/80 mix-blend-overlay animate-pulse">
         </div>
+    </div>
+    <!-- Top Left -->
+    <div class="absolute top-8 left-8 p-2 border-l border-t border-neon-cyan/50 parallax-hud" data-speed="0.02">
+        <div class="font-cyber text-[10px] text-neon-cyan tracking-widest mb-1">OPTICAL_TARGET</div>
+        <div class="text-xs text-white/80 font-mono" id="hud-coords">X:0000 Y:0000</div>
+    </div>
+    <!-- Top Right -->
+    <div class="absolute top-8 right-8 text-right parallax-hud" data-speed="0.03">
+        <div class="font-cyber text-[10px] text-neon-cyan tracking-widest mb-1">SYS_TIME</div>
+        <div class="text-xl text-white font-mono" id="hud-time">00:00:00</div>
+        <div class="w-24 h-px bg-neon-cyan/30 ml-auto mt-1"></div>
+    </div>
+    <!-- Bottom Left -->
+    <div class="absolute bottom-8 left-8 parallax-hud" data-speed="0.02">
+        <div class="flex items-end gap-2">
+            <div class="text-3xl text-cyber-purple font-cyber" id="hud-bpm">72</div>
+            <div class="text-[10px] text-neon-cyan mb-1">BPM</div>
+        </div>
+        <div class="w-32 h-6 border border-neon-cyan/20 mt-1 relative overflow-hidden">
+            <div class="absolute inset-0 bg-neon-cyan/10 animate-pulse"></div>
+            <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+                <path d="M0,10 L10,10 L15,0 L20,20 L25,10 L128,10" fill="none" stroke="#22d3ee" stroke-width="1"
+                    vector-effect="non-scaling-stroke" class="animate-ekg" />
+            </svg>
+        </div>
+    </div>
+    <!-- Center Reticle (Follows Mouse with lag) -->
+    <div id="hud-reticle"
+        class="absolute w-12 h-12 border border-neon-cyan/30 rounded-full flex items-center justify-center -translate-x-1/2 -translate-y-1/2 opacity-50">
+        <div class="w-1 h-1 bg-neon-cyan rounded-full"></div>
+        <div class="absolute inset-0 border-t border-b border-neon-cyan/60 scale-75 animate-spin-slow"></div>
+    </div>
     </div>
 
     <!-- AI Log Chat (Tachikoma Style) -->
@@ -1498,23 +1560,48 @@
             <!-- Hero Section (Arcane Tech Style) -->
             <section class="h-screen w-full relative flex items-center justify-center overflow-hidden bg-void-black"
                 id="hero">
-                <!-- Parallax BG & Grid -->
-                <div class="absolute inset-0 z-0">
-                    <!-- Darker overlay for neon contrast -->
-                    <img src="https://images.unsplash.com/photo-1516339901601-2e1b62dc0c45?q=80&w=2571&auto=format&fit=crop"
-                        class="w-full h-full object-cover opacity-30 scale-110 mix-blend-overlay grayscale" id="hero-bg"
-                        alt="Fantasy Sky">
-                    <div class="absolute inset-0 bg-gradient-to-b from-void-black via-void-black/80 to-void-black">
-                    </div>
+                <!-- Fixed Parallax Background Container -->
+                <div id="city-parallax-container" class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+                    <!-- Layer 1: Sky (Furthest) -->
+                    <img src="./City/Bright/sky.png" class="city-layer absolute top-0 left-0 w-full h-full object-cover"
+                        data-speed="0.05" style="z-index: 1;">
 
-                    <!-- Cyber Grid Floor -->
-                    <div
-                        class="absolute bottom-0 left-0 w-full h-[50vh] bg-[linear-gradient(to_right,#a855f720_1px,transparent_1px),linear-gradient(to_bottom,#a855f720_1px,transparent_1px)] bg-[size:4rem_4rem] [transform:perspective(500px)_rotateX(60deg)] origin-bottom">
-                    </div>
+                    <!-- Layer 2: Far City -->
+                    <img src="./City/Bright/City3.png"
+                        class="city-layer absolute bottom-0 left-0 w-full h-[60%] object-cover md:object-contain object-bottom"
+                        data-speed="0.1" style="z-index: 2;">
+
+                    <!-- Layer 3: Road/Ground -->
+                    <img src="./City/Bright/road.png"
+                        class="city-layer absolute bottom-0 left-0 w-full h-full object-cover object-bottom"
+                        data-speed="0.2" style="z-index: 3;">
+
+                    <!-- Layer 4: Interactive Houses (Mid) -->
+                    <img src="./City/Bright/houses3.png"
+                        class="city-layer absolute bottom-0 right-0 w-[50%] md:w-[40%] object-contain object-bottom"
+                        data-speed="0.3" style="z-index: 4;">
+
+                    <!-- Layer 5: Interactive Houses (Close - Left) -->
+                    <img src="./City/Bright/houses1.png"
+                        class="city-layer absolute bottom-0 left-0 w-[60%] md:w-[50%] object-contain object-bottom"
+                        data-speed="0.4" style="z-index: 5;">
+
+                    <!-- Layer 6: Main House/Element (User Request: houded2) -->
+                    <img src="./City/Bright/houded2.png"
+                        class="city-layer absolute bottom-0 left-1/2 -translate-x-1/2 w-[80%] md:w-[60%] object-contain object-bottom"
+                        data-speed="0.5" style="z-index: 6;">
+
+                    <!-- Gradient Overlay to blend with dark theme -->
+                    <div class="absolute inset-0 bg-gradient-to-b from-void-black/30 via-transparent to-void-black/90"
+                        style="z-index: 7;"></div>
+
+                    <!-- Cyber Grid Floor (Retained but subtle) -->
+                    <div class="absolute bottom-0 left-0 w-full h-[50vh] bg-[linear-gradient(to_right,#a855f710_1px,transparent_1px),linear-gradient(to_bottom,#a855f710_1px,transparent_1px)] bg-[size:4rem_4rem] [transform:perspective(500px)_rotateX(60deg)] origin-bottom"
+                        style="z-index: 8;"></div>
 
                     <!-- Void Eyes Container -->
                     <div id="void-eyes-layer"
-                        class="absolute inset-0 pointer-events-none overflow-hidden z-10 transition-opacity duration-1000 opacity-0">
+                        class="absolute inset-0 pointer-events-none overflow-hidden z-[9] transition-opacity duration-1000 opacity-0">
                     </div>
                 </div>
 
@@ -2702,6 +2789,97 @@
                     const dx = (x - cx) * speed;
                     const dy = (y - cy) * speed;
                     gsap.to(el, { x: -dx, y: -dy, duration: 0.5 });
+                });
+            });
+
+            /* --- 12. VISUAL HACK LOGIC (Intrusion) --- */
+            const hackOverlay = document.getElementById('hack-overlay');
+
+            function triggerVisualHack() {
+                // Intro protection
+                if (document.getElementById('intro-overlay').style.display !== 'none') {
+                    scheduleHack();
+                    return;
+                }
+
+                // Activate Hack
+                hackOverlay.classList.remove('hidden');
+                document.body.classList.add('body-hack-active');
+
+                // Random duration for the glitch (short)
+                const duration = 100 + Math.random() * 200; // 100ms - 300ms
+
+                // Flicker effect within the duration
+                let flickerCount = 0;
+                const flickerInterval = setInterval(() => {
+                    hackOverlay.style.opacity = Math.random();
+                    hackOverlay.style.transform = `translate(${Math.random() * 10 - 5}px, ${Math.random() * 10 - 5}px)`;
+                    flickerCount++;
+                    if (flickerCount > 5) clearInterval(flickerInterval);
+                }, 30);
+
+                setTimeout(() => {
+                    hackOverlay.classList.add('hidden');
+                    document.body.classList.remove('body-hack-active');
+                    hackOverlay.style.transform = 'none';
+                    // Log the hack
+                    if (typeof addLogMessage === 'function') {
+                        // Direct DOM manipulation for urgent log
+                        const logC = document.getElementById('ai-log-content');
+                        if (logC) {
+                            const p = document.createElement('div');
+                            p.className = "text-red-500 font-bold shake-anim";
+                            p.innerHTML = `<span class="text-xs">[WARN]</span> INTRUSION DETECTED`;
+                            logC.appendChild(p);
+                            logC.scrollTop = logC.scrollHeight;
+                        }
+                    }
+                    scheduleHack();
+                }, duration);
+            }
+
+            function scheduleHack() {
+                // 10s to 30s random interval
+                const interval = 10000 + Math.random() * 20000;
+                setTimeout(triggerVisualHack, interval);
+            }
+
+            // Start the cycle
+            scheduleHack();
+
+            /* --- 13. CITYSCAPE PARALLAX LOGIC --- */
+            const cityLayers = document.querySelectorAll('.city-layer');
+
+            // Mouse Parallax
+            window.addEventListener('mousemove', (e) => {
+                const cx = window.innerWidth / 2;
+                const cy = window.innerHeight / 2;
+                const dx = (e.clientX - cx) / cx; // -1 to 1
+                const dy = (e.clientY - cy) / cy; // -1 to 1
+
+                cityLayers.forEach(layer => {
+                    const speed = parseFloat(layer.dataset.speed || 0.1);
+                    gsap.to(layer, {
+                        x: dx * speed * 50, // Horizontal shift
+                        y: dy * speed * 20, // Vertical shift (subtle)
+                        duration: 1,
+                        ease: "power2.out"
+                    });
+                });
+            });
+
+            // Scroll Parallax (Vertical)
+            cityLayers.forEach(layer => {
+                const speed = parseFloat(layer.dataset.speed || 0.1);
+                gsap.to(layer, {
+                    scrollTrigger: {
+                        trigger: "#hero",
+                        start: "top top",
+                        end: "bottom top",
+                        scrub: true
+                    },
+                    y: speed * 200, // Move down as we scroll
+                    ease: "none"
                 });
             });
 
