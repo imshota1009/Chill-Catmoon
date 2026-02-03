@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400;700&family=Great+Vibes&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400;700&family=Great+Vibes&family=Orbitron:wght@400;700;900&display=swap"
         rel="stylesheet">
 
     <!-- Tailwind CSS -->
@@ -20,23 +20,39 @@
             theme: {
                 extend: {
                     colors: {
-                        'moon-dark': '#0f172a', /* slate-900 */
-                        'moon-light': '#1e293b', /* slate-800 */
-                        'gold-accent': '#fbbf24', /* amber-400 */
-                        'parchment': '#fef3c7', /* amber-100 */
-                        /* Hytale Theme Colors */
-                        'hytale-dark': '#022c22', /* emerald-950 */
-                        'hytale-light': '#064e3b', /* emerald-900 */
-                        'hytale-accent': '#2dd4bf', /* teal-400 */
-                        'hytale-stone': '#e2e8f0', /* slate-200 */
+                        /* Fantasy × Cyberpunk "Arcane Tech" Theme */
+                        'void-black': '#0a0a0f',
+                        'arcane-dark': '#0f0f1a',
+                        'arcane-purple': '#1a1a2e',
+                        'cyber-purple': '#a855f7',
+                        'neon-pink': '#ec4899',
+                        'neon-cyan': '#22d3ee',
+                        'magic-gold': '#fbbf24',
+                        'rune-blue': '#3b82f6',
+                        'hologram': '#06b6d4',
+                        /* Legacy support */
+                        'moon-dark': '#0a0a0f',
+                        'moon-light': '#1a1a2e',
+                        'gold-accent': '#a855f7',
+                        'parchment': '#e0e7ff',
+                        'hytale-dark': '#0a0a0f',
+                        'hytale-light': '#1a1a2e',
+                        'hytale-accent': '#22d3ee',
                     },
                     fontFamily: {
                         'cinzel': ['"Cinzel"', 'serif'],
                         'lato': ['"Lato"', 'sans-serif'],
                         'script': ['"Great Vibes"', 'cursive'],
+                        'cyber': ['"Orbitron"', 'monospace'],
                     },
                     cursor: {
                         'none': 'none',
+                    },
+                    animation: {
+                        'glitch': 'glitch 0.3s ease-in-out infinite',
+                        'scanline': 'scanline 8s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
                     }
                 }
             }
@@ -54,13 +70,217 @@
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 
     <style>
+        /* === ARCANE TECH: Fantasy × Cyberpunk Theme === */
+
         body {
-            background-color: #0f172a;
-            color: #fef3c7;
+            background-color: #0a0a0f;
+            color: #e0e7ff;
             overflow-x: hidden;
             cursor: none;
             transition: background-color 1s ease, color 1s ease;
-            /* Custom cursor everywhere */
+        }
+
+        /* Scanline overlay effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9000;
+            background: repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 0, 0, 0.03) 2px,
+                    rgba(0, 0, 0, 0.03) 4px);
+            animation: scanline 8s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% {
+                background-position: 0 0;
+            }
+
+            100% {
+                background-position: 0 100vh;
+            }
+        }
+
+        /* Glitch keyframes */
+        @keyframes glitch {
+
+            0%,
+            100% {
+                transform: translate(0);
+            }
+
+            20% {
+                transform: translate(-2px, 2px);
+            }
+
+            40% {
+                transform: translate(2px, -2px);
+            }
+
+            60% {
+                transform: translate(-1px, -1px);
+            }
+
+            80% {
+                transform: translate(1px, 1px);
+            }
+        }
+
+        @keyframes glitchText {
+
+            0%,
+            100% {
+                text-shadow: -2px 0 #ec4899, 2px 0 #22d3ee;
+                transform: translate(0);
+            }
+
+            25% {
+                text-shadow: 2px 0 #ec4899, -2px 0 #22d3ee;
+                transform: translate(-1px, 1px);
+            }
+
+            50% {
+                text-shadow: -1px 0 #ec4899, 1px 0 #22d3ee;
+                transform: translate(1px, -1px);
+            }
+
+            75% {
+                text-shadow: 1px 0 #ec4899, -1px 0 #22d3ee;
+                transform: translate(-2px, 0);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                opacity: 0.6;
+                box-shadow: 0 0 20px currentColor;
+            }
+
+            50% {
+                opacity: 1;
+                box-shadow: 0 0 40px currentColor, 0 0 60px currentColor;
+            }
+        }
+
+        @keyframes neonFlicker {
+
+            0%,
+            19%,
+            21%,
+            23%,
+            25%,
+            54%,
+            56%,
+            100% {
+                opacity: 1;
+            }
+
+            20%,
+            24%,
+            55% {
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes runeGlow {
+
+            0%,
+            100% {
+                filter: drop-shadow(0 0 5px #a855f7);
+            }
+
+            50% {
+                filter: drop-shadow(0 0 20px #a855f7) drop-shadow(0 0 40px #ec4899);
+            }
+        }
+
+        /* Typewriter effect */
+        .typewriter {
+            overflow: hidden;
+            border-right: 2px solid #a855f7;
+            white-space: nowrap;
+            animation: typing 3s steps(30) forwards, blink 0.7s step-end infinite;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: 100%;
+            }
+        }
+
+        @keyframes blink {
+            50% {
+                border-color: transparent;
+            }
+        }
+
+        /* Glitch text class */
+        .glitch-text {
+            position: relative;
+        }
+
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch-text::before {
+            color: #ec4899;
+            animation: glitchText 2s infinite;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+            transform: translateX(-2px);
+        }
+
+        .glitch-text::after {
+            color: #22d3ee;
+            animation: glitchText 2s infinite reverse;
+            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+            transform: translateX(2px);
+        }
+
+        /* Neon glow text */
+        .neon-text {
+            text-shadow:
+                0 0 5px currentColor,
+                0 0 10px currentColor,
+                0 0 20px currentColor,
+                0 0 40px #a855f7;
+            animation: neonFlicker 3s infinite;
+        }
+
+        /* Magic rune glow */
+        .rune-glow {
+            animation: runeGlow 2s infinite;
         }
 
         /* --- Hytale Theme Override --- */
@@ -154,11 +374,11 @@
             background: #2dd4bf;
         }
 
-        /* --- Custom Cursor --- */
+        /* --- Custom Cursor (Arcane Tech Style) --- */
         .cursor-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #fbbf24;
+            width: 10px;
+            height: 10px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
             border-radius: 50%;
             position: fixed;
             top: 0;
@@ -166,13 +386,18 @@
             transform: translate(-50%, -50%);
             z-index: 9999;
             pointer-events: none;
-            box-shadow: 0 0 15px 2px rgba(251, 191, 36, 0.8);
+            box-shadow:
+                0 0 10px #a855f7,
+                0 0 20px #ec4899,
+                0 0 30px #22d3ee;
+            animation: pulseGlow 2s ease-in-out infinite;
         }
 
         .cursor-ring {
-            width: 40px;
-            height: 40px;
-            border: 1px solid rgba(251, 191, 36, 0.5);
+            width: 45px;
+            height: 45px;
+            border: 2px solid transparent;
+            border-image: linear-gradient(135deg, #a855f7, #22d3ee) 1;
             border-radius: 50%;
             position: fixed;
             top: 0;
@@ -180,7 +405,78 @@
             transform: translate(-50%, -50%);
             z-index: 9998;
             pointer-events: none;
-            transition: width 0.3s, height 0.3s, background-color 0.3s;
+            transition: width 0.3s, height 0.3s, border-color 0.3s;
+            background:
+                linear-gradient(#0a0a0f, #0a0a0f) padding-box,
+                linear-gradient(135deg, #a855f7, #22d3ee, #ec4899) border-box;
+            border: 2px solid transparent;
+        }
+
+        /* === Ghost in the Shell Style Gimmicks === */
+
+        /* Net Dive Overlay */
+        @keyframes diveMove {
+            0% {
+                transform: translateZ(0) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateZ(1000px) rotate(10deg);
+                opacity: 0;
+            }
+        }
+
+        .dive-tunnel {
+            transform-origin: 50% 50%;
+        }
+
+        /* Slow Spin for Magic Ring */
+        @keyframes spinSlow {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .animate-spin-slow {
+            animation: spinSlow 60s linear infinite;
+        }
+
+        /* Matrix / Code Rain Text */
+        @keyframes matrixRain {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+        }
+
+        .code-rain::before {
+            content: "01001011 11010010 01100011 00001011";
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            animation: matrixRain 2s linear infinite;
+            display: block;
         }
 
         /* --- Lantern Effect Layer --- */
@@ -206,7 +502,7 @@
             pointer-events: none;
         }
 
-        /* --- 3D Card Styles --- */
+        /* --- 3D Card Styles (Hologram + Magic) --- */
         .magic-card-wrapper {
             perspective: 1000px;
             transform-style: preserve-3d;
@@ -214,41 +510,66 @@
 
         .magic-card {
             transform-style: preserve-3d;
-            background: rgba(30, 41, 59, 0.6);
-            /* Semi-transparent */
-            border: 1px solid rgba(251, 191, 36, 0.2);
-            backdrop-filter: blur(5px);
-            transition: border-color 0.3s;
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(10, 10, 15, 0.95));
+            border: 1px solid transparent;
+            background-image:
+                linear-gradient(rgba(26, 26, 46, 0.9), rgba(10, 10, 15, 0.95)),
+                linear-gradient(135deg, #a855f7, #22d3ee, #ec4899);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* Fancy border corners */
-        .magic-card::before,
-        .magic-card::after {
+        /* Hologram shimmer effect */
+        .magic-card::before {
             content: '';
             position: absolute;
-            width: 15px;
-            height: 15px;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg,
+                    transparent 30%,
+                    rgba(168, 85, 247, 0.1) 40%,
+                    rgba(34, 211, 238, 0.1) 50%,
+                    rgba(236, 72, 153, 0.1) 60%,
+                    transparent 70%);
+            transform: rotate(45deg);
+            animation: hologramShimmer 3s infinite;
             pointer-events: none;
-            transition: all 0.4s ease;
         }
 
-        .magic-card::before {
-            top: -1px;
-            left: -1px;
-            border-top: 2px solid #fbbf24;
-            border-left: 2px solid #fbbf24;
+        @keyframes hologramShimmer {
+            0% {
+                transform: translateX(-100%) rotate(45deg);
+            }
+
+            100% {
+                transform: translateX(100%) rotate(45deg);
+            }
         }
 
+        /* Corner runes */
         .magic-card::after {
-            bottom: -1px;
-            right: -1px;
-            border-bottom: 2px solid #fbbf24;
-            border-right: 2px solid #fbbf24;
+            content: '◇';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-size: 12px;
+            color: #a855f7;
+            animation: runeGlow 2s infinite;
+            pointer-events: none;
         }
 
         .magic-card:hover {
-            border-color: rgba(251, 191, 36, 0.8);
-            box-shadow: 0 0 30px rgba(251, 191, 36, 0.15);
+            transform: translateY(-5px);
+            box-shadow:
+                0 0 30px rgba(168, 85, 247, 0.3),
+                0 0 60px rgba(34, 211, 238, 0.2),
+                0 20px 40px rgba(0, 0, 0, 0.4);
         }
 
         /* Sealed Card Style */
@@ -795,10 +1116,132 @@
             color: #ef4444;
             text-shadow: 0 0 5px rgba(239, 68, 68, 0.4);
         }
+
+        /* --- Therm-optic Camouflage (Ghost in the Shell) --- */
+        .optic-camo {
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 10;
+        }
+
+        .optic-camo:hover {
+            /* Transparency + Brightness + Blur */
+            opacity: 0.3;
+            filter: url(#optic-camo-filter) brightness(1.5) contrast(1.2);
+            /* The card border/glow remains but content distorts/fades */
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.5), inset 0 0 30px rgba(34, 211, 238, 0.3);
+
+            /* --- Cyborg Assembly Loading (Ghost in the Shell) --- */
+            @keyframes cyborgScan {
+                0% {
+                    filter: grayscale(1) sepia(1) hue-rotate(90deg) brightness(0.5);
+                    /* Cyber Green */
+                    clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
+                    opacity: 0;
+                }
+
+                10% {
+                    opacity: 1;
+                }
+
+                60% {
+                    filter: grayscale(1) sepia(1) hue-rotate(90deg) brightness(0.8);
+                    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+                    /* Fully revealed as wireframe */
+                }
+
+                80% {
+                    filter: brightness(2) contrast(1.2);
+                    /* Flash (Muscle/Connect) */
+                }
+
+                100% {
+                    filter: none;
+                    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+                }
+            }
+
+            @keyframes wireframeOverlay {
+                0% {
+                    opacity: 1;
+                    background-size: 100% 0%;
+                }
+
+                60% {
+                    background-size: 100% 100%;
+                    opacity: 0.8;
+                }
+
+                100% {
+                    opacity: 0;
+                }
+            }
+
+            .cyborg-loading {
+                position: relative;
+            }
+
+            .cyborg-loading img {
+                animation: cyborgScan 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+                /* Stagger delay will be inherited from parent if needed, but handled by JS insertion timing mostly */
+            }
+
+            /* Green Grid Overlay during loading */
+            .cyborg-loading::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(180deg, rgba(34, 211, 238, 0) 0%, rgba(168, 85, 247, 0.5) 50%, rgba(34, 211, 238, 0) 100%);
+                background-size: 100% 200%;
+                z-index: 10;
+                pointer-events: none;
+                mix-blend-mode: hard-light;
+                animation: scanlinePass 1.2s linear forwards;
+            }
+
+            @keyframes scanlinePass {
+                0% {
+                    background-position: 0% 100%;
+                    opacity: 0;
+                }
+
+                10% {
+                    opacity: 1;
+                }
+
+                100% {
+                    background-position: 0% -100%;
+                    opacity: 0;
+                }
+            }
+
+            @keyframes ekg {
+                0% {
+                    transform: translateX(-100%);
+                }
+
+                100% {
+                    transform: translateX(100%);
+                }
+            }
+
+            .animate-ekg {
+                animation: ekg 2s linear infinite;
+            }
+        }
     </style>
 </head>
 
 <body>
+    <!-- SVG Filters for Effects -->
+    <svg style="position: absolute; width: 0; height: 0; pointer-events: none;">
+        <defs>
+            <filter id="optic-camo-filter">
+                <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" result="warp" />
+                <feDisplacementMap xChannelSelector="R" yChannelSelector="G" scale="20" in="SourceGraphic" in2="warp" />
+            </filter>
+        </defs>
+    </svg>
 
     <!-- Config -->
     <script>
@@ -880,22 +1323,136 @@
     <div class="cursor-dot hidden md:block"></div>
     <div class="cursor-ring hidden md:block"></div>
 
-    <!-- Intro Overlay -->
-    <div id="intro-overlay" class="fixed inset-0 bg-black z-[100] flex flex-col items-center justify-center">
-        <div class="text-center space-y-6 intro-elements opacity-0">
-            <h1 class="font-cinzel text-5xl md:text-7xl text-gold-accent tracking-[0.2em] glow-text">
+    <!-- Intro Overlay (Arcane Tech Style) -->
+    <div id="intro-overlay"
+        class="fixed inset-0 bg-void-black z-[100] flex flex-col items-center justify-center overflow-hidden"
+        style="background-color: #0a0a0f; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 99999; display: flex;">
+
+        <!-- Net Dive Tunnel (Hidden by default) -->
+        <div id="net-dive-overlay"
+            class="absolute inset-0 z-50 pointer-events-none opacity-0 flex items-center justify-center perspective-[1000px]">
+            <div class="dive-tunnel w-full h-full absolute inset-0"
+                style="background: repeating-linear-gradient(90deg, transparent 0, transparent 50px, rgba(34, 211, 238, 0.1) 50px, rgba(34, 211, 238, 0.1) 51px), repeating-linear-gradient(0deg, transparent 0, transparent 50px, rgba(168, 85, 247, 0.1) 50px, rgba(168, 85, 247, 0.1) 51px); transform-style: preserve-3d;">
+            </div>
+            <div
+                class="code-rain absolute inset-0 text-green-500 font-cyber opacity-20 text-xs overflow-hidden flex justify-between px-10">
+            </div>
+        </div>
+
+        <!-- Background circuit pattern -->
+        <div class="absolute inset-0 opacity-10"
+            style="background-image: url('data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 100 100\'><path d=\'M0 50h40M60 50h40M50 0v40M50 60v40\' stroke=\'%23a855f7\' stroke-width=\'0.5\' fill=\'none\'/><circle cx=\'50\' cy=\'50\' r=\'3\' fill=\'none\' stroke=\'%23a855f7\' stroke-width=\'0.5\'/></svg>'); background-size: 100px 100px;">
+        </div>
+
+        <!-- Animated magic circles -->
+        <div class="absolute w-[600px] h-[600px] border border-cyber-purple/20 rounded-full animate-spin"
+            style="animation-duration: 30s;"></div>
+        <div class="absolute w-[500px] h-[500px] border border-neon-cyan/20 rounded-full animate-spin"
+            style="animation-duration: 20s; animation-direction: reverse;"></div>
+        <div class="absolute w-[400px] h-[400px] border border-neon-pink/20 rounded-full animate-spin"
+            style="animation-duration: 25s;"></div>
+
+        <!-- Laughing Man Style Ring -->
+        <div class="absolute w-[700px] h-[700px] pointer-events-none animate-spin-slow opacity-30 md:opacity-50">
+            <svg viewBox="0 0 500 500" class="w-full h-full">
+                <path id="text-curve" d="M250,50 A200,200 0 1,1 250,450 A200,200 0 1,1 250,50" fill="none" />
+                <text fill="#22d3ee" font-family="Orbitron" font-size="14" letter-spacing="4">
+                    <textPath href="#text-curve" startOffset="0%">
+                        WE BUILD SILENCE IN A WORLD OF NOISE /// CHILL_CATMOON PROJECT /// GHOST IN THE ARCHITECTURE ///
+                    </textPath>
+                </text>
+            </svg>
+        </div>
+
+        <div class="text-center space-y-6 intro-elements opacity-0 relative z-10 w-full max-w-4xl px-4">
+            <!-- Glitch Title -->
+            <h1 class="font-cinzel text-5xl md:text-8xl text-cyber-purple tracking-[0.15em] glitch-text neon-text"
+                data-text="Chill_CatMoon">
                 Chill_CatMoon
             </h1>
-            <p class="font-lato text-gray-400 tracking-[0.3em] uppercase text-sm">Minecraft Cinematic Architecture</p>
 
-            <button id="enter-btn"
-                class="mt-8 px-10 py-3 border border-gold-accent text-gold-accent font-cinzel hover:bg-gold-accent hover:text-black transition-all duration-500 tracking-wider">
-                Enter World
+            <!-- Typewriter Subtitle -->
+            <div class="h-8 flex items-center justify-center">
+                <p id="typewriter-text"
+                    class="font-cyber text-neon-cyan tracking-[0.3em] uppercase text-sm md:text-base"></p>
+                <span class="animate-pulse text-neon-cyan">▌</span>
+            </div>
+
+            <!-- Hologram Enter Button -->
+            <button id="enter-btn" class="mt-8 px-12 py-4 relative overflow-hidden group font-cyber text-sm tracking-[0.2em] uppercase
+                       border-2 border-transparent bg-gradient-to-r from-cyber-purple/20 to-neon-cyan/20
+                       hover:from-cyber-purple hover:to-neon-cyan transition-all duration-500
+                       text-white hover:text-void-black"
+                style="background-image: linear-gradient(#0a0a0f, #0a0a0f), linear-gradient(90deg, #a855f7, #22d3ee); background-origin: border-box; background-clip: padding-box, border-box;">
+                <span class="relative z-10">[ ENTER_REALM ]</span>
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-cyber-purple to-neon-cyan opacity-0 group-hover:opacity-100 transition-opacity">
+                </div>
             </button>
+
+            <!-- Status indicators -->
+            <div class="flex items-center justify-center gap-6 mt-8 text-xs font-cyber text-gray-500">
+                <span class="flex items-center gap-2"><span
+                        class="w-2 h-2 bg-neon-cyan rounded-full animate-pulse"></span> SYSTEM ONLINE</span>
+            </div>
+        </div>
+    </div>
+    <!-- END INTRO OVERLAY -->
+
+    <!-- CYBER EYE HUD LAYER (Ghost in the Shell) -->
+    <div id="cyber-hud-layer" class="fixed inset-0 pointer-events-none z-[9000] hidden md:block mix-blend-screen">
+        <!-- Top Left -->
+        <div class="absolute top-8 left-8 p-2 border-l border-t border-neon-cyan/50 parallax-hud" data-speed="0.02">
+            <div class="font-cyber text-[10px] text-neon-cyan tracking-widest mb-1">OPTICAL_TARGET</div>
+            <div class="text-xs text-white/80 font-mono" id="hud-coords">X:0000 Y:0000</div>
+        </div>
+        <!-- Top Right -->
+        <div class="absolute top-8 right-8 text-right parallax-hud" data-speed="0.03">
+            <div class="font-cyber text-[10px] text-neon-cyan tracking-widest mb-1">SYS_TIME</div>
+            <div class="text-xl text-white font-mono" id="hud-time">00:00:00</div>
+            <div class="w-24 h-px bg-neon-cyan/30 ml-auto mt-1"></div>
+        </div>
+        <!-- Bottom Left -->
+        <div class="absolute bottom-8 left-8 parallax-hud" data-speed="0.02">
+            <div class="flex items-end gap-2">
+                <div class="text-3xl text-cyber-purple font-cyber" id="hud-bpm">72</div>
+                <div class="text-[10px] text-neon-cyan mb-1">BPM</div>
+            </div>
+            <div class="w-32 h-6 border border-neon-cyan/20 mt-1 relative overflow-hidden">
+                <div class="absolute inset-0 bg-neon-cyan/10 animate-pulse"></div>
+                <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+                    <path d="M0,10 L10,10 L15,0 L20,20 L25,10 L128,10" fill="none" stroke="#22d3ee" stroke-width="1"
+                        vector-effect="non-scaling-stroke" class="animate-ekg" />
+                </svg>
+            </div>
+        </div>
+        <!-- Center Reticle (Follows Mouse with lag) -->
+        <div id="hud-reticle"
+            class="absolute w-12 h-12 border border-neon-cyan/30 rounded-full flex items-center justify-center -translate-x-1/2 -translate-y-1/2 opacity-50">
+            <div class="w-1 h-1 bg-neon-cyan rounded-full"></div>
+            <div class="absolute inset-0 border-t border-b border-neon-cyan/60 scale-75 animate-spin-slow"></div>
         </div>
     </div>
 
-    <!-- Controls (BGM & Scope) -->
+    <!-- AI Log Chat (Tachikoma Style) -->
+    <div id="ai-log-container"
+        class="fixed bottom-4 right-4 z-[9999] w-72 md:w-80 font-cyber text-[10px] md:text-xs pointer-events-none hidden md:block">
+        <div
+            class="bg-void-black/80 border border-cyber-purple/30 backdrop-blur-sm p-3 rounded-tr-lg rounded-bl-lg relative overflow-hidden">
+            <div
+                class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-purple via-neon-cyan to-transparent">
+            </div>
+            <div class="flex items-center justify-between mb-2 text-gray-500 border-b border-gray-800 pb-1">
+                <span>[ AI_LOG_STREAM ]</span>
+                <span class="animate-pulse text-neon-cyan">● LIVE</span>
+            </div>
+            <div id="ai-log-content"
+                class="space-y-1 h-32 overflow-hidden flex flex-col justify-end text-neon-cyan/80 text-shadow-sm">
+                <!-- Logs will be injected here -->
+            </div>
+            <div class="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-neon-cyan"></div>
+        </div>
+    </div>
     <div class="fixed top-6 right-6 z-[100] flex flex-col gap-4">
         <!-- BGM Toggle -->
         <button id="bgm-toggle"
@@ -931,107 +1488,150 @@
         <audio id="bgm-player" loop></audio>
     </div>
 
-    <!-- Moon Phase Widget (Simple) -->
-    <div id="moon-widget"
-        class="fixed bottom-8 left-8 z-[90] pointer-events-none opacity-0 transition-opacity duration-1000 hidden md:block">
-        <div class="relative w-14 h-14">
-            <div id="moon-phase"
-                class="w-full h-full rounded-full bg-gray-800 shadow-[0_0_15px_rgba(251,191,36,0.1)] border border-gray-700 overflow-hidden relative">
-                <!-- Glowing Surface -->
-                <div class="absolute inset-0 bg-parchment opacity-90 rounded-full"></div>
-                <!-- Shadow Mask (Darkness) -->
-                <div id="moon-shadow" class="absolute inset-0 bg-moon-dark rounded-full"
-                    style="transform: translateX(0)"></div>
-            </div>
-            <div class="absolute -bottom-5 w-full text-center font-cinzel text-[8px] text-gray-500 tracking-[0.2em]">
-                JOURNEY</div>
-        </div>
-    </div>
+
 
     <!-- Main Content (Smooth Scroll Wrapper) -->
     <div id="smooth-wrapper">
         <div id="smooth-content">
 
             <!-- Hero Section -->
-            <section class="h-screen w-full relative flex items-center justify-center overflow-hidden" id="hero">
-                <!-- Parallax BG -->
+            <!-- Hero Section (Arcane Tech Style) -->
+            <section class="h-screen w-full relative flex items-center justify-center overflow-hidden bg-void-black"
+                id="hero">
+                <!-- Parallax BG & Grid -->
                 <div class="absolute inset-0 z-0">
+                    <!-- Darker overlay for neon contrast -->
                     <img src="https://images.unsplash.com/photo-1516339901601-2e1b62dc0c45?q=80&w=2571&auto=format&fit=crop"
-                        class="w-full h-full object-cover opacity-60 scale-110" id="hero-bg" alt="Fantasy Sky">
-                    <div class="absolute inset-0 bg-gradient-to-b from-moon-dark/50 via-transparent to-moon-dark"></div>
+                        class="w-full h-full object-cover opacity-30 scale-110 mix-blend-overlay grayscale" id="hero-bg"
+                        alt="Fantasy Sky">
+                    <div class="absolute inset-0 bg-gradient-to-b from-void-black via-void-black/80 to-void-black">
+                    </div>
 
-                    <!-- Void Eyes Container (Spawns across section) -->
+                    <!-- Cyber Grid Floor -->
+                    <div
+                        class="absolute bottom-0 left-0 w-full h-[50vh] bg-[linear-gradient(to_right,#a855f720_1px,transparent_1px),linear-gradient(to_bottom,#a855f720_1px,transparent_1px)] bg-[size:4rem_4rem] [transform:perspective(500px)_rotateX(60deg)] origin-bottom">
+                    </div>
+
+                    <!-- Void Eyes Container -->
                     <div id="void-eyes-layer"
                         class="absolute inset-0 pointer-events-none overflow-hidden z-10 transition-opacity duration-1000 opacity-0">
                     </div>
                 </div>
 
                 <!-- Hero Content -->
-                <div class="relative z-20 text-center mix-blend-screen px-4">
-                    <h2 class="font-script text-3xl md:text-4xl text-gray-300 mb-4 animate-float">Welcome traveler</h2>
-                    <h1 class="font-cinzel text-6xl md:text-9xl text-white font-bold tracking-tighter mb-6 relative">
-                        <span class="inline-block hover:text-gold-accent transition-colors duration-700">C</span>hill
-                        <span class="inline-block hover:text-gold-accent transition-colors duration-700">_</span>
-                        <span class="inline-block hover:text-gold-accent transition-colors duration-700">C</span>atMoon
-                    </h1>
+                <div class="relative z-20 text-center px-4">
                     <div
-                        class="w-[1px] h-20 bg-gradient-to-b from-transparent via-gold-accent to-transparent mx-auto mt-10">
+                        class="inline-block p-1 border border-cyber-purple/30 bg-cyber-purple/10 backdrop-blur-sm rounded-none mb-6">
+                        <h2
+                            class="font-cyber text-xs md:text-sm text-neon-cyan tracking-[0.4em] uppercase animate-pulse px-4 py-1">
+                            System: Digital_Sanctuary
+                        </h2>
                     </div>
+
+                    <h1 class="font-cinzel text-5xl md:text-9xl text-white font-bold tracking-tighter mb-8 relative glitch-text"
+                        data-text="Chill_CatMoon">
+                        <span
+                            class="inline-block hover:text-neon-pink transition-colors duration-300 neon-text">C</span>hill
+                        <span class="inline-block hover:text-neon-cyan transition-colors duration-300">_</span>
+                        <span
+                            class="inline-block hover:text-cyber-purple transition-colors duration-300 neon-text">C</span>atMoon
+                    </h1>
+
+                    <div
+                        class="relative w-full max-w-2xl mx-auto h-px bg-gradient-to-r from-transparent via-magic-gold to-transparent opacity-50">
+                        <div
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 border border-magic-gold rotate-45 bg-void-black">
+                        </div>
+                    </div>
+
+                    <p
+                        class="font-lato text-gray-400 mt-8 tracking-[0.2em] text-sm md:text-base max-w-lg mx-auto leading-relaxed">
+                        <span class="text-neon-pink">&lt;</span> WE BUILD SILENCE <span
+                            class="text-neon-cyan">/&gt;</span> IN A WORLD OF NOISE
+                    </p>
                 </div>
             </section>
 
-            <!-- Gallery Section -->
-            <section class="relative py-24 px-6 md:px-20 bg-moon-dark z-20" id="works">
-                <div class="max-w-7xl mx-auto">
-                    <div class="mb-10 text-center flex flex-col items-center">
-                        <i class="fa-solid fa-moon text-gold-accent text-2xl mb-4 animate-pulse" id="section-icon"></i>
-                        <h2 class="font-cinzel text-4xl md:text-5xl text-white mb-6 transition-all duration-500"
-                            id="section-title">Grand Archives</h2>
+            <!-- Gallery Section (Arcane Tech Style) -->
+            <section class="relative py-24 px-6 md:px-20 bg-void-black z-20 overflow-hidden" id="works">
+                <!-- Background decorations -->
+                <div class="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-cyber-purple/5 to-transparent">
+                </div>
+                <div class="absolute bottom-0 left-0 w-1/3 h-full bg-gradient-to-r from-neon-cyan/5 to-transparent">
+                </div>
+
+                <div class="max-w-7xl mx-auto relative z-10">
+                    <div class="mb-16 text-center flex flex-col items-center">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="h-px w-12 bg-neon-pink/50"></div>
+                            <i class="fa-solid fa-layer-group text-neon-cyan text-2xl animate-pulse"
+                                id="section-icon"></i>
+                            <div class="h-px w-12 bg-neon-pink/50"></div>
+                        </div>
+
+                        <h2 class="font-cinzel text-4xl md:text-6xl text-white mb-2 transition-all duration-500 glitch-text"
+                            data-text="Grand Archives" id="section-title">Grand Archives</h2>
+                        <p class="font-cyber text-cyber-purple text-xs tracking-[0.3em] uppercase mb-10">[
+                            DATA_REPOSITORY_V2.0 ]</p>
 
                         <!-- World Switcher -->
-                        <div class="world-switch-container" id="world-switcher">
-                            <div class="world-switch-bg"></div>
-                            <button class="world-switch-btn active" data-cat="minecraft">MINECRAFT</button>
-                            <button class="world-switch-btn" data-cat="hytale">HYTALE</button>
+                        <div class="world-switch-container border-cyber-purple/30 bg-void-black/80 backdrop-blur-md"
+                            id="world-switcher">
+                            <div class="world-switch-bg bg-gradient-to-r from-cyber-purple to-neon-pink"></div>
+                            <button class="world-switch-btn active font-cyber tracking-widest text-xs"
+                                data-cat="minecraft">MINECRAFT</button>
+                            <button class="world-switch-btn font-cyber tracking-widest text-xs"
+                                data-cat="hytale">HYTALE</button>
                         </div>
                     </div>
 
                     <!-- Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-14" id="gallery-grid">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-14 perspective-1000"
+                        id="gallery-grid">
                         <!-- Cards injected via JS -->
                     </div>
                 </div>
             </section>
 
-            <!-- About Section -->
-            <section class="relative py-32 flex items-center justify-center bg-moon-dark overflow-hidden">
+            <!-- About Section (Arcane Tech Style) -->
+            <section
+                class="relative py-32 flex items-center justify-center bg-arcane-dark overflow-hidden border-t border-cyber-purple/20">
                 <!-- Decorative BG Text -->
-                <div
-                    class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[20vw] font-cinzel text-white opacity-[0.02] pointer-events-none whitespace-nowrap">
-                    STORYTELLER
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[15vw] font-cyber text-white opacity-[0.03] pointer-events-none whitespace-nowrap glitch-text"
+                    data-text="SYSTEM_ADMIN">
+                    SYSTEM_ADMIN
                 </div>
 
                 <div class="relative z-20 max-w-3xl w-full px-6">
                     <div
-                        class="border border-gold-accent/30 bg-moon-light/30 backdrop-blur-md p-10 md:p-16 text-center rounded-sm relative group">
-                        <!-- Corner Decorations -->
-                        <div class="absolute top-0 left-0 w-4 h-4 border-t border-l border-gold-accent"></div>
-                        <div class="absolute top-0 right-0 w-4 h-4 border-t border-r border-gold-accent"></div>
-                        <div class="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-gold-accent"></div>
-                        <div class="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-gold-accent"></div>
+                        class="border border-neon-cyan/30 bg-void-black/60 backdrop-blur-md p-10 md:p-16 text-center relative group overflow-hidden">
+                        <!-- Hologram scanline -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-b from-transparent via-neon-cyan/5 to-transparent h-full w-full animate-scanline opacity-30 pointer-events-none">
+                        </div>
 
-                        <h3 class="font-cinzel text-3xl text-gold-accent mb-8">The Concept</h3>
-                        <p class="font-lato text-gray-300 leading-8 mb-6 text-lg">
-                            We build silence.<br>
-                            In a world of noise, Chill_CatMoon offers a digital sanctuary.
-                            Through the medium of Minecraft, we craft stories without words,
-                            architecture that breathes, and landscapes that invite you to dream.
+                        <!-- Corner Decorations -->
+                        <div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-neon-pink"></div>
+                        <div class="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-neon-cyan"></div>
+                        <div class="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-neon-cyan"></div>
+                        <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-neon-pink"></div>
+
+                        <h3 class="font-cyber text-2xl text-neon-cyan mb-8 tracking-widest">[ THE_CONCEPT ]</h3>
+                        <p class="font-lato text-gray-300 leading-8 mb-6 text-lg relative z-10">
+                            We build silence in a world of static.<br>
+                            <span class="text-cyber-purple">Chill_CatMoon</span> is a digital sanctuary forged from
+                            pixels and code.
+                            Through the lens of Minecraft, we render unauthorized realities and
+                            construct dreams that defy the algorithm.
                         </p>
 
-                        <div class="flex justify-center gap-6 mt-10">
+                        <div class="flex justify-center gap-8 mt-10">
                             <a href="https://www.instagram.com/im._.shota1009" target="_blank"
-                                class="text-gray-400 hover:text-gold-accent hover:scale-110 transition-all text-2xl"><i
+                                class="text-gray-400 hover:text-neon-pink hover:scale-110 transition-all text-3xl glow-text"><i
                                     class="fa-brands fa-instagram"></i></a>
+                            <a href="#"
+                                class="text-gray-400 hover:text-neon-cyan hover:scale-110 transition-all text-3xl glow-text"><i
+                                    class="fa-brands fa-github"></i></a>
                         </div>
                     </div>
                 </div>
@@ -1082,19 +1682,103 @@
             const toggle = document.getElementById('bgm-toggle');
             const slider = document.getElementById('volume-slider');
 
-            // Intro Reveal
+            // === TYPEWRITER EFFECT ===
+            const typewriterEl = document.getElementById('typewriter-text');
+            const typewriterText = "MINECRAFT_CINEMATIC_ARCHITECTURE";
+            let charIndex = 0;
+
+            function typeWriter() {
+                if (charIndex < typewriterText.length) {
+                    typewriterEl.textContent += typewriterText.charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeWriter, 80);
+                }
+            }
+
+            // Start typewriter after intro fade in
+            setTimeout(typeWriter, 1500);
+
+            // === AI LOG SYSTEM (Ghost in the Shell Style) ===
+            const aiLogContent = document.getElementById('ai-log-content');
+            const aiMessages = [
+                "System Check... OK",
+                "Connecting to neural network...",
+                "Ghost line detected.",
+                "Synchronizing visual cortex...",
+                "Firewall status: ACTIVE",
+                "External memory accessed.",
+                "Logic bomb neutralized.",
+                "Protocol 2501 initiated.",
+                "Stand alone complex verified.",
+                "Scanning for cyber-brain...",
+                "Optical camouflage: STANDBY",
+                "Thought encryption: ENABLED",
+                "Analyzing user sentiment...",
+                "Rendering authorized reality...",
+            ];
+
+            function addLogMessage() {
+                const msg = aiMessages[Math.floor(Math.random() * aiMessages.length)];
+                const p = document.createElement('div');
+                p.className = "opacity-0 translate-x-4 transition-all duration-300";
+                p.innerHTML = `<span class="text-xs text-cyber-purple">[SYS]</span> ${msg}`;
+                aiLogContent.appendChild(p);
+
+                // Animate in
+                requestAnimationFrame(() => {
+                    p.classList.remove('opacity-0', 'translate-x-4');
+                });
+
+                // Keep max 6 messages
+                if (aiLogContent.children.length > 6) {
+                    aiLogContent.removeChild(aiLogContent.firstChild);
+                }
+
+                // Random interval
+                setTimeout(addLogMessage, Math.random() * 2000 + 1000);
+            }
+
+            // Start AI Log
+            setTimeout(addLogMessage, 2000);
+
+            // Intro Reveal (Modified to force visible)
+            // Force initial state
+            gsap.set(intro, { display: 'flex', opacity: 1 });
+            gsap.set('.intro-elements', { opacity: 0 });
             gsap.to('.intro-elements', { opacity: 1, duration: 2, delay: 0.5 });
 
+            // Force lock scroll
+            document.body.style.overflow = 'hidden';
+
+            // === NET DIVE INTERACTION ===
             btn.addEventListener('click', () => {
                 // Play Audio
                 player.src = CONFIG.bgmUrl;
                 player.volume = 0.3;
                 player.play().catch(e => console.log("Audio prevented"));
 
-                // Animate Out
+                const netDive = document.getElementById('net-dive-overlay');
+                const tunnel = netDive.querySelector('.dive-tunnel');
+
+                // Activate Net Dive
+                if (netDive) {
+                    netDive.style.opacity = 1;
+                    tunnel.style.animation = "diveMove 1.5s cubic-bezier(0.7, 0, 0.3, 1) forwards";
+                }
+
+                // Animate text out (Zoom effect)
+                gsap.to('.intro-elements', {
+                    opacity: 0,
+                    scale: 5, // Zoom into text
+                    duration: 0.5,
+                    ease: "power2.in"
+                });
+
+                // Main Intro Fade Out
                 gsap.to(intro, {
                     opacity: 0,
-                    duration: 1.5,
+                    duration: 1,
+                    delay: 0.8,
                     onComplete: () => {
                         intro.style.display = 'none';
                         startMain();
@@ -1106,7 +1790,7 @@
                 // Show Audio
                 audioWidget.classList.remove('pointer-events-none');
                 gsap.to(audioWidget, { opacity: 1, duration: 1 });
-                gsap.to('#moon-widget', { opacity: 1, duration: 1, delay: 0.5 }); // Show moon widget after intro
+
 
                 // Animate Scroll Elements
                 gsap.from("#hero-bg", {
@@ -1176,7 +1860,8 @@
                     }
 
                     // Base classes
-                    let wrapperClass = "magic-card-wrapper h-64 md:h-72 group block opacity-0";
+                    // Added optic-camo for Ghost in the Shell effect
+                    let wrapperClass = "magic-card-wrapper h-64 md:h-72 group block opacity-0 optic-camo";
                     if (isSealed) wrapperClass += " card-sealed";
                     else wrapperClass += " cursor-none";
 
@@ -1194,7 +1879,7 @@
                     const titleColor = isSealed ? 'text-gray-400' : 'text-white group-hover:text-gold-accent';
 
                     card.innerHTML = `
-                        <div class="magic-card w-full h-full relative p-4 flex flex-col justify-end overflow-hidden rounded-lg">
+                        <div class="magic-card cyborg-loading w-full h-full relative p-4 flex flex-col justify-end overflow-hidden rounded-lg">
                             ${lockHTML}
                             <div class="absolute inset-0 z-0 pointer-events-none">
                                 <img src="${thumbnail}" class="w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-500 group-hover:scale-110">
@@ -1472,30 +2157,7 @@
             }
             animateConstellations();
 
-            /* --- 5. MOON PHASE SCROLL GIMMICK --- */
-            gsap.to('#moon-widget', { opacity: 1, duration: 1, delay: 2 });
-            const moonShadow = document.getElementById('moon-shadow');
-            const moonPhase = document.getElementById('moon-phase');
 
-            ScrollTrigger.create({
-                trigger: "body",
-                start: "top top",
-                end: "bottom bottom",
-                onUpdate: (self) => {
-                    // Simple "Waxing" effect: Shadow moves from 0% (covering) to 150% (reveals full moon)
-                    // Start: Moon is covered (New Moonish)
-                    // End: Moon is full
-                    const progress = self.progress;
-                    const move = -60 + (progress * 180); // -60% to 120%
-
-                    gsap.set(moonShadow, { x: `${move}%` });
-
-                    // Add glow intensity
-                    gsap.set(moonPhase, {
-                        boxShadow: `0 0 ${10 + progress * 30}px rgba(251, 191, 36, ${0.2 + progress * 0.6})`
-                    });
-                }
-            });
 
 
 
@@ -2003,6 +2665,45 @@
             }
 
             /* --- 10. PARALLAX FLOATING RUNES (REMOVED) --- */
+
+            /* --- 11. CYBER HUD (Ghost in the Shell) --- */
+            const hudCoords = document.getElementById('hud-coords');
+            const hudTime = document.getElementById('hud-time');
+            const hudBpm = document.getElementById('hud-bpm');
+            const hudReticle = document.getElementById('hud-reticle');
+            const parallaxEls = document.querySelectorAll('.parallax-hud');
+
+            // Time Update
+            setInterval(() => {
+                if (!hudTime) return;
+                const now = new Date();
+                hudTime.innerText = now.toLocaleTimeString('en-US', { hour12: false });
+                // Random BPM fluctuation
+                if (Math.random() > 0.8 && hudBpm) hudBpm.innerText = 70 + Math.floor(Math.random() * 20);
+            }, 1000);
+
+            // Mouse Tracking Integration
+            window.addEventListener('mousemove', (e) => {
+                const x = e.clientX;
+                const y = e.clientY;
+
+                // Coords
+                if (hudCoords) hudCoords.innerText = `X:${x.toString().padStart(4, '0')} Y:${y.toString().padStart(4, '0')}`;
+
+                // Reticle
+                if (hudReticle) gsap.to(hudReticle, { x: x, y: y, duration: 0.5, ease: "power2.out" });
+
+                // Parallax
+                const cx = window.innerWidth / 2;
+                const cy = window.innerHeight / 2;
+
+                parallaxEls.forEach(el => {
+                    const speed = parseFloat(el.dataset.speed || 0.02);
+                    const dx = (x - cx) * speed;
+                    const dy = (y - cy) * speed;
+                    gsap.to(el, { x: -dx, y: -dy, duration: 0.5 });
+                });
+            });
 
         });
     </script>

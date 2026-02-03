@@ -1,0 +1,2555 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chill_CatMoon | Minecraft Cinematic Architecture</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400;700&family=Great+Vibes&family=Orbitron:wght@400;700;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        /* Fantasy × Cyberpunk "Arcane Tech" Theme */
+                        'void-black': '#0a0a0f',
+                        'arcane-dark': '#0f0f1a',
+                        'arcane-purple': '#1a1a2e',
+                        'cyber-purple': '#a855f7',
+                        'neon-pink': '#ec4899',
+                        'neon-cyan': '#22d3ee',
+                        'magic-gold': '#fbbf24',
+                        'rune-blue': '#3b82f6',
+                        'hologram': '#06b6d4',
+                        /* Legacy support */
+                        'moon-dark': '#0a0a0f',
+                        'moon-light': '#1a1a2e',
+                        'gold-accent': '#a855f7',
+                        'parchment': '#e0e7ff',
+                        'hytale-dark': '#0a0a0f',
+                        'hytale-light': '#1a1a2e',
+                        'hytale-accent': '#22d3ee',
+                    },
+                    fontFamily: {
+                        'cinzel': ['"Cinzel"', 'serif'],
+                        'lato': ['"Lato"', 'sans-serif'],
+                        'script': ['"Great Vibes"', 'cursive'],
+                        'cyber': ['"Orbitron"', 'monospace'],
+                    },
+                    cursor: {
+                        'none': 'none',
+                    },
+                    animation: {
+                        'glitch': 'glitch 0.3s ease-in-out infinite',
+                        'scanline': 'scanline 8s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Lenis (Smooth Scroll) -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+    <style>
+        /* === ARCANE TECH: Fantasy × Cyberpunk Theme === */
+
+        body {
+            background-color: #0a0a0f;
+            color: #e0e7ff;
+            overflow-x: hidden;
+            cursor: none;
+            transition: background-color 1s ease, color 1s ease;
+        }
+
+        /* Scanline overlay effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9000;
+            background: repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 0, 0, 0.03) 2px,
+                    rgba(0, 0, 0, 0.03) 4px);
+            animation: scanline 8s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% {
+                background-position: 0 0;
+            }
+
+            100% {
+                background-position: 0 100vh;
+            }
+        }
+
+        /* Glitch keyframes */
+        @keyframes glitch {
+
+            0%,
+            100% {
+                transform: translate(0);
+            }
+
+            20% {
+                transform: translate(-2px, 2px);
+            }
+
+            40% {
+                transform: translate(2px, -2px);
+            }
+
+            60% {
+                transform: translate(-1px, -1px);
+            }
+
+            80% {
+                transform: translate(1px, 1px);
+            }
+        }
+
+        @keyframes glitchText {
+
+            0%,
+            100% {
+                text-shadow: -2px 0 #ec4899, 2px 0 #22d3ee;
+                transform: translate(0);
+            }
+
+            25% {
+                text-shadow: 2px 0 #ec4899, -2px 0 #22d3ee;
+                transform: translate(-1px, 1px);
+            }
+
+            50% {
+                text-shadow: -1px 0 #ec4899, 1px 0 #22d3ee;
+                transform: translate(1px, -1px);
+            }
+
+            75% {
+                text-shadow: 1px 0 #ec4899, -1px 0 #22d3ee;
+                transform: translate(-2px, 0);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                opacity: 0.6;
+                box-shadow: 0 0 20px currentColor;
+            }
+
+            50% {
+                opacity: 1;
+                box-shadow: 0 0 40px currentColor, 0 0 60px currentColor;
+            }
+        }
+
+        @keyframes neonFlicker {
+
+            0%,
+            19%,
+            21%,
+            23%,
+            25%,
+            54%,
+            56%,
+            100% {
+                opacity: 1;
+            }
+
+            20%,
+            24%,
+            55% {
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes runeGlow {
+
+            0%,
+            100% {
+                filter: drop-shadow(0 0 5px #a855f7);
+            }
+
+            50% {
+                filter: drop-shadow(0 0 20px #a855f7) drop-shadow(0 0 40px #ec4899);
+            }
+        }
+
+        /* Typewriter effect */
+        .typewriter {
+            overflow: hidden;
+            border-right: 2px solid #a855f7;
+            white-space: nowrap;
+            animation: typing 3s steps(30) forwards, blink 0.7s step-end infinite;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: 100%;
+            }
+        }
+
+        @keyframes blink {
+            50% {
+                border-color: transparent;
+            }
+        }
+
+        /* Glitch text class */
+        .glitch-text {
+            position: relative;
+        }
+
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch-text::before {
+            color: #ec4899;
+            animation: glitchText 2s infinite;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+            transform: translateX(-2px);
+        }
+
+        .glitch-text::after {
+            color: #22d3ee;
+            animation: glitchText 2s infinite reverse;
+            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+            transform: translateX(2px);
+        }
+
+        /* Neon glow text */
+        .neon-text {
+            text-shadow:
+                0 0 5px currentColor,
+                0 0 10px currentColor,
+                0 0 20px currentColor,
+                0 0 40px #a855f7;
+            animation: neonFlicker 3s infinite;
+        }
+
+        /* Magic rune glow */
+        .rune-glow {
+            animation: runeGlow 2s infinite;
+        }
+
+        /* --- Hytale Theme Override --- */
+        body.theme-hytale {
+            background-color: #022c22;
+            /* Deep Forest/Cave */
+            color: #ecfdf5;
+        }
+
+        body.theme-hytale .text-gold-accent {
+            color: #2dd4bf !important;
+            /* Teal/Cyan Magic */
+        }
+
+        body.theme-hytale .border-gold-accent {
+            border-color: #2dd4bf !important;
+        }
+
+        body.theme-hytale .bg-gold-accent {
+            background-color: #2dd4bf !important;
+        }
+
+        body.theme-hytale .cursor-dot {
+            background-color: #2dd4bf;
+            box-shadow: 0 0 15px 2px rgba(45, 212, 191, 0.8);
+        }
+
+        body.theme-hytale .cursor-ring {
+            border-color: rgba(45, 212, 191, 0.5);
+        }
+
+        /* Hytale Card Style */
+        body.theme-hytale .magic-card {
+            background: rgba(6, 78, 59, 0.6);
+            border-color: rgba(45, 212, 191, 0.3);
+        }
+
+        body.theme-hytale .magic-card::before {
+            border-top-color: #2dd4bf;
+            border-left-color: #2dd4bf;
+        }
+
+        body.theme-hytale .magic-card::after {
+            border-bottom-color: #2dd4bf;
+            border-right-color: #2dd4bf;
+        }
+
+        /* Switcher Styles */
+        .world-switch-container {
+            position: relative;
+            display: flex;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 9999px;
+            padding: 4px;
+            backdrop-filter: blur(4px);
+        }
+
+        .world-switch-btn {
+            padding: 8px 24px;
+            border-radius: 9999px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            color: #94a3b8;
+            transition: all 0.5s ease;
+            position: relative;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .world-switch-btn.active {
+            color: #0f172a;
+        }
+
+        .world-switch-bg {
+            position: absolute;
+            top: 4px;
+            bottom: 4px;
+            left: 4px;
+            width: calc(50% - 4px);
+            background: #fbbf24;
+            border-radius: 9999px;
+            z-index: 1;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.5s ease;
+        }
+
+        /* Hytale Switch State */
+        .world-switch-container.hytale-active .world-switch-bg {
+            transform: translateX(100%);
+            background: #2dd4bf;
+        }
+
+        /* --- Custom Cursor (Arcane Tech Style) --- */
+        .cursor-dot {
+            width: 10px;
+            height: 10px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            pointer-events: none;
+            box-shadow:
+                0 0 10px #a855f7,
+                0 0 20px #ec4899,
+                0 0 30px #22d3ee;
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+
+        .cursor-ring {
+            width: 45px;
+            height: 45px;
+            border: 2px solid transparent;
+            border-image: linear-gradient(135deg, #a855f7, #22d3ee) 1;
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            z-index: 9998;
+            pointer-events: none;
+            transition: width 0.3s, height 0.3s, border-color 0.3s;
+            background:
+                linear-gradient(#0a0a0f, #0a0a0f) padding-box,
+                linear-gradient(135deg, #a855f7, #22d3ee, #ec4899) border-box;
+            border: 2px solid transparent;
+        }
+
+        /* === Ghost in the Shell Style Gimmicks === */
+
+        /* Net Dive Overlay */
+        @keyframes diveMove {
+            0% {
+                transform: translateZ(0) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateZ(1000px) rotate(10deg);
+                opacity: 0;
+            }
+        }
+
+        .dive-tunnel {
+            transform-origin: 50% 50%;
+        }
+
+        /* Slow Spin for Magic Ring */
+        @keyframes spinSlow {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .animate-spin-slow {
+            animation: spinSlow 60s linear infinite;
+        }
+
+        /* Matrix / Code Rain Text */
+        @keyframes matrixRain {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+        }
+
+        .code-rain::before {
+            content: "01001011 11010010 01100011 00001011";
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            animation: matrixRain 2s linear infinite;
+            display: block;
+        }
+
+        /* --- Lantern Effect Layer --- */
+        /* A dark layer that covers the screen, masked by a radial gradient around mouse */
+        #lantern-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 5;
+            pointer-events: none;
+            background: rgba(15, 23, 42, 0.85);
+            /* Deep dark blue veil */
+            /* The mask will be applied via JS to create the hole */
+            mask-image: radial-gradient(circle 300px at var(--mouse-x) var(--mouse-y), transparent 10%, black 100%);
+            -webkit-mask-image: radial-gradient(circle 300px at var(--mouse-x, 50%) var(--mouse-y, 50%), transparent 0%, black 60%);
+        }
+
+        /* --- Constellation Canvas --- */
+        #constellation-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 10;
+            /* Above lantern, below text */
+            pointer-events: none;
+        }
+
+        /* --- 3D Card Styles (Hologram + Magic) --- */
+        .magic-card-wrapper {
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+
+        .magic-card {
+            transform-style: preserve-3d;
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(10, 10, 15, 0.95));
+            border: 1px solid transparent;
+            background-image:
+                linear-gradient(rgba(26, 26, 46, 0.9), rgba(10, 10, 15, 0.95)),
+                linear-gradient(135deg, #a855f7, #22d3ee, #ec4899);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Hologram shimmer effect */
+        .magic-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg,
+                    transparent 30%,
+                    rgba(168, 85, 247, 0.1) 40%,
+                    rgba(34, 211, 238, 0.1) 50%,
+                    rgba(236, 72, 153, 0.1) 60%,
+                    transparent 70%);
+            transform: rotate(45deg);
+            animation: hologramShimmer 3s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes hologramShimmer {
+            0% {
+                transform: translateX(-100%) rotate(45deg);
+            }
+
+            100% {
+                transform: translateX(100%) rotate(45deg);
+            }
+        }
+
+        /* Corner runes */
+        .magic-card::after {
+            content: '◇';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-size: 12px;
+            color: #a855f7;
+            animation: runeGlow 2s infinite;
+            pointer-events: none;
+        }
+
+        .magic-card:hover {
+            transform: translateY(-5px);
+            box-shadow:
+                0 0 30px rgba(168, 85, 247, 0.3),
+                0 0 60px rgba(34, 211, 238, 0.2),
+                0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Sealed Card Style */
+        .card-sealed {
+            cursor: not-allowed;
+        }
+
+        .card-sealed .magic-card {
+            filter: grayscale(0.8) brightness(0.7);
+        }
+
+        .card-sealed:hover .magic-card {
+            box-shadow: none;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Lock Overlay */
+        .lock-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+            opacity: 0.8;
+            font-size: 3rem;
+            color: #94a3b8;
+        }
+
+        /* Shake Animation */
+        @keyframes shake {
+            0% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-5px);
+            }
+
+            40% {
+                transform: translateX(5px);
+            }
+
+            60% {
+                transform: translateX(-5px);
+            }
+
+            80% {
+                transform: translateX(5px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        .shake-anim {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        /* --- XP Orb Gimmick --- */
+        .xp-orb {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(circle, #facc15 0%, #a3e635 100%);
+            /* Yellow to Lime */
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            box-shadow: 0 0 10px #bef264;
+            opacity: 0.8;
+        }
+
+        /* --- Void Eye Gimmick --- */
+        .void-eye-container {
+            position: fixed;
+            z-index: 1;
+            /* Behind content but above BG */
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+
+        .void-eye {
+            width: 8px;
+            /* Small distant glowing eyes */
+            height: 20px;
+            background: #a5f3fc;
+            /* Cyan glow */
+            border-radius: 50%;
+            box-shadow: 0 0 15px #22d3ee;
+            display: inline-block;
+            margin: 0 10px;
+            animation: eye-blink 4s infinite;
+        }
+
+        @keyframes eye-blink {
+
+            0%,
+            48%,
+            52%,
+            100% {
+                transform: scaleY(1);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: scaleY(0.1);
+                opacity: 0.5;
+            }
+        }
+
+        .magic-card:hover::before,
+        .magic-card:hover::after {
+            width: 100%;
+            height: 100%;
+            opacity: 0.5;
+        }
+
+        /* --- Text Glow & Reveal --- */
+        .glow-text {
+            text-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
+        }
+
+        /* --- Magic Spark --- */
+        .magic-spark {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: #fbbf24;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            box-shadow: 0 0 10px #fbbf24;
+        }
+
+        /* --- Observatory Overlay (New Gimmick) --- */
+        #observatory-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            /* Top level */
+            background: #000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        body.observatory-active #observatory-overlay {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* The Telescope Lens Viewport */
+        .lens-viewport {
+            width: min(80vw, 80vh);
+            height: min(80vw, 80vh);
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 0 100vmax black;
+            /* Masks everything else */
+            border: 2px solid #334155;
+            cursor: crosshair;
+        }
+
+        /* Fake lens glass reflection/shine */
+        .lens-viewport::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+            z-index: 50;
+            pointer-events: none;
+        }
+
+        /* Inner Space Content */
+        .lens-content {
+            position: absolute;
+            inset: -20%;
+            /* Larger than viewport for parallax */
+            background: radial-gradient(circle, #1e1b4b 0%, #000 100%);
+        }
+
+        /* Detailed Big Moon */
+        .observatory-moon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: #e2e8f0;
+            box-shadow:
+                inset -20px -20px 60px rgba(0, 0, 0, 0.8),
+                0 0 50px rgba(200, 200, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .observatory-moon::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(circle at 20% 40%, rgba(100, 100, 100, 0.2) 5%, transparent 10%),
+                radial-gradient(circle at 60% 70%, rgba(100, 100, 100, 0.3) 15%, transparent 20%),
+                radial-gradient(circle at 80% 30%, rgba(100, 100, 100, 0.2) 8%, transparent 12%);
+        }
+
+        /* Crosshairs */
+        .obs-crosshair {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 60;
+        }
+
+        .obs-crosshair-line {
+            position: absolute;
+            background: rgba(251, 191, 36, 0.4);
+        }
+
+        /* HUD Text */
+        .obs-hud {
+            position: absolute;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(251, 191, 36, 0.6);
+            font-family: 'Cinzel', serif;
+            font-size: 10px;
+            letter-spacing: 2px;
+            z-index: 60;
+            text-align: center;
+        }
+
+        /* --- Cat Crater Gimmick --- */
+        .cat-crater {
+            position: absolute;
+            top: 35%;
+            left: 42%;
+            width: 70px;
+            height: 70px;
+            opacity: 0.3;
+            transform: rotate(-10deg);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23475569" d="M20,30 Q10,10 30,20 Q40,5 50,20 Q60,5 70,20 Q90,10 80,30 Q95,40 85,60 Q90,80 70,85 Q60,95 50,85 Q40,95 30,85 Q10,80 15,60 Q5,40 20,30 Z" /><circle cx="35" cy="45" r="6" fill="%23334155" /><circle cx="65" cy="45" r="6" fill="%23334155" /><path fill="none" stroke="%23334155" stroke-width="4" stroke-linecap="round" d="M45,65 Q50,70 55,65" /></svg>');
+            background-repeat: no-repeat;
+            background-size: contain;
+            mix-blend-mode: multiply;
+            pointer-events: none;
+        }
+
+        /* --- Real Moon Shadow --- */
+        .moon-shadow-overlay {
+            position: absolute;
+            inset: -2px;
+            border-radius: 50%;
+            background: #0f172a;
+            /* Match space bg */
+            transform: translateX(100%);
+            /* Default hidden */
+            box-shadow: inset 10px 0 30px rgba(0, 0, 0, 0.9);
+            filter: blur(2px);
+            z-index: 20;
+            opacity: 0.95;
+            transition: transform 0.5s ease-out;
+        }
+
+        /* --- UFO Gimmick --- */
+        .ufo-object {
+            position: absolute;
+            width: 50px;
+            height: 20px;
+            background: #94a3b8;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #22d3ee;
+            /* Alien cyan glow */
+            z-index: 10;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+
+        .ufo-object::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: 15px;
+            width: 20px;
+            height: 20px;
+            background: rgba(34, 211, 238, 0.6);
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        /* --- Satellite Gimmick --- */
+        .satellite-object {
+            position: absolute;
+            width: 40px;
+            height: 10px;
+            background: #334155;
+            z-index: 10;
+            pointer-events: auto;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .satellite-object::before,
+        .satellite-object::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 20px;
+            background: #1e293b;
+            border: 1px solid #475569;
+        }
+
+        .satellite-object::before {
+            left: -15px;
+        }
+
+        .satellite-object::after {
+            right: -15px;
+        }
+
+        .satellite-core {
+            width: 12px;
+            height: 12px;
+            background: #cbd5e1;
+            border-radius: 50%;
+            z-index: 2;
+            box-shadow: 0 0 5px white;
+        }
+
+        /* --- Debris Gimmick --- */
+        .debris-object {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #475569;
+            clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
+            z-index: 10;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+
+        /* --- Black Hole Gimmick --- */
+        .black-hole-wrapper {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            pointer-events: auto;
+            cursor: pointer;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bh-disk {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, transparent 0%, #fbbf24 40%, rgba(251, 191, 36, 0.8) 50%, transparent 60%, #d97706 80%, transparent 100%);
+            animation: bh-spin 4s linear infinite;
+            filter: blur(8px);
+            opacity: 0.9;
+            transform: scaleY(0.4) rotate(0deg);
+            /* Disc perspective */
+        }
+
+        .bh-core {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: black;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #fbbf24, 0 0 40px #d97706;
+            /* Glow */
+            z-index: 10;
+        }
+
+        .bh-photon {
+            position: absolute;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            z-index: 11;
+            box-shadow: inset 0 0 10px white;
+        }
+
+        @keyframes bh-spin {
+            from {
+                transform: scaleY(0.4) rotate(0deg);
+            }
+
+            to {
+                transform: scaleY(0.4) rotate(360deg);
+            }
+        }
+
+        /* --- Genhin-Style Realm Transition --- */
+        #realm-transition-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            background: #0f172a;
+            /* Default Moon Dark */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #realm-transition-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .transition-loader {
+            width: 50px;
+            height: 50px;
+            border: 2px solid transparent;
+            border-top-color: #fbbf24;
+            border-radius: 50%;
+            animation: spin-loader 1s linear infinite;
+        }
+
+        @keyframes spin-loader {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* --- Ambient Spirit Particles (Minecraft) --- */
+        .spirit-particle {
+            position: fixed;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            box-shadow: 0 0 10px white;
+            z-index: 10;
+            /* Behind content but seen */
+            transition: opacity 1s;
+        }
+
+        /* --- Falling Leaves (Hytale) --- */
+        .leaf-particle {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: #4ade80;
+            /* bright green */
+            border-radius: 2px 8px;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 2;
+            box-shadow: 0 0 5px rgba(74, 222, 128, 0.4);
+        }
+
+        /* --- RPG Lore Tooltip --- */
+        #rpg-tooltip {
+            position: fixed;
+            z-index: 10000;
+            /* Top level */
+            pointer-events: none;
+            background: linear-gradient(180deg, rgba(16, 20, 50, 0.95) 0%, rgba(10, 12, 30, 0.98) 100%);
+            border: 2px solid #5d4f3b;
+            /* Dark gold/bronze */
+            box-shadow: 0 0 0 2px #181d40, 0 10px 30px rgba(0, 0, 0, 0.8);
+            padding: 16px;
+            border-radius: 4px;
+            color: #ddd;
+            width: 280px;
+            opacity: 0;
+            transition: opacity 0.2s, transform 0.1s;
+            font-family: 'Lato', sans-serif;
+        }
+
+        #rpg-tooltip.visible {
+            opacity: 1;
+        }
+
+        .tooltip-header {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        .tooltip-rarity {
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .tooltip-desc {
+            font-size: 0.85rem;
+            color: #aaa;
+            font-style: italic;
+            line-height: 1.4;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .tooltip-stat {
+            font-size: 0.8rem;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4px;
+        }
+
+        .tooltip-stat span:last-child {
+            color: #fbbf24;
+        }
+
+        .rarity-epic {
+            color: #d946ef;
+            text-shadow: 0 0 5px rgba(217, 70, 239, 0.4);
+        }
+
+        .rarity-legendary {
+            color: #fbbf24;
+            text-shadow: 0 0 5px rgba(251, 191, 36, 0.4);
+        }
+
+        .rarity-sealed {
+            color: #ef4444;
+            text-shadow: 0 0 5px rgba(239, 68, 68, 0.4);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Config -->
+    <script>
+        const CONFIG = {
+            bgmUrl: "https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3",
+            videos: [
+                // ONE - Minecraft
+                { id: "wpESCBpZpIk", title: "Elven Town", category: "minecraft", status: "available" },
+                { id: "DSENlYWq3GA", title: "Witch Village", category: "minecraft", status: "available" },
+                { id: "1kc4fF9n9MU", title: "Blacksmith", category: "minecraft", status: "available" },
+                { id: "-DBSjz4no0Y", title: "Land of Fairies", category: "minecraft", status: "available" },
+                { id: "pXbP7KlbGno", title: "Steampunk City", category: "minecraft", status: "available" },
+
+                // TWO - Hytale (Coming Soon)
+                { id: "o77MzDQT1cg", title: "COMING SOON", category: "hytale", status: "coming_soon" },
+                { id: "o77MzDQT1cg", title: "COMING SOON", category: "hytale", status: "coming_soon" },
+                { id: "o77MzDQT1cg", title: "COMING SOON", category: "hytale", status: "coming_soon" },
+                { id: "o77MzDQT1cg", title: "COMING SOON", category: "hytale", status: "coming_soon" }
+            ]
+        };
+    </script>
+
+    <!-- Layers -->
+    <div id="lantern-layer"></div>
+    <div id="spirit-layer" class="fixed inset-0 pointer-events-none z-0"></div> <!-- Spirits/Leaves Container -->
+    <div id="rune-layer" class="fixed inset-0 pointer-events-none z-0" style="display: none;"></div>
+    <!-- Runes Removed -->
+
+    <!-- Realm Transition -->
+    <div id="realm-transition-overlay">
+        <div class="transition-loader"></div>
+    </div>
+
+    <!-- Mana Scroll Indicator -->
+    <div id="mana-progress-container">
+        <div id="mana-progress-bar"></div>
+    </div>
+
+    <canvas id="constellation-canvas"></canvas>
+
+    <!-- Observatory Overlay -->
+    <div id="observatory-overlay">
+        <div class="lens-viewport">
+            <div class="lens-content" id="lens-content">
+                <!-- Stars generated by JS -->
+                <!-- Stars generated by JS -->
+                <div class="observatory-moon">
+                    <!-- Crater Gimmick -->
+                    <div class="cat-crater"></div>
+                    <!-- Realtime Shadow -->
+                    <div class="moon-shadow-overlay" id="obs-moon-shadow"></div>
+                </div>
+                <!-- UFO Container -->
+                <div id="ufo-container" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
+            </div>
+            <!-- Crosshair -->
+            <div class="obs-crosshair">
+                <div class="obs-crosshair-line w-full h-[1px] top-1/2 left-0"></div>
+                <div class="obs-crosshair-line w-[1px] h-full top-0 left-1/2"></div>
+                <div
+                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] border border-white/10 rounded-full">
+                </div>
+            </div>
+            <!-- HUD -->
+            <div class="obs-hud">
+                Target: LUNA-7<br>
+                Mag: 300x
+            </div>
+        </div>
+
+        <!-- Close Button -->
+        <button id="obs-close"
+            class="absolute top-10 right-10 text-white/50 hover:text-white z-[210] font-cinzel tracking-widest text-sm border border-white/30 px-4 py-2 hover:bg-white/10 transition-colors">
+            CLOSE OBSERVATION
+        </button>
+    </div>
+
+    <!-- Cursor -->
+    <div class="cursor-dot hidden md:block"></div>
+    <div class="cursor-ring hidden md:block"></div>
+
+    <!-- Intro Overlay (Arcane Tech Style) -->
+    <div id="intro-overlay"
+        class="fixed inset-0 bg-void-black z-[100] flex flex-col items-center justify-center overflow-hidden"
+        style="background-color: #0a0a0f; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 99999; display: flex;">
+
+        <!-- Net Dive Tunnel (Hidden by default) -->
+        <div id="net-dive-overlay"
+            class="absolute inset-0 z-50 pointer-events-none opacity-0 flex items-center justify-center perspective-[1000px]">
+            <div class="dive-tunnel w-full h-full absolute inset-0"
+                style="background: repeating-linear-gradient(90deg, transparent 0, transparent 50px, rgba(34, 211, 238, 0.1) 50px, rgba(34, 211, 238, 0.1) 51px), repeating-linear-gradient(0deg, transparent 0, transparent 50px, rgba(168, 85, 247, 0.1) 50px, rgba(168, 85, 247, 0.1) 51px); transform-style: preserve-3d;">
+            </div>
+            <div
+                class="code-rain absolute inset-0 text-green-500 font-cyber opacity-20 text-xs overflow-hidden flex justify-between px-10">
+            </div>
+        </div>
+
+        <!-- Background circuit pattern -->
+        <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,<svg xmlns=\"
+            http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" viewBox=\"0 0 100 100\">
+            <path d=\"M0 50h40M60 50h40M50 0v40M50 60v40\" stroke=\"%23a855f7\" stroke-width=\"0.5\" fill=\"none\" />
+            <circle cx=\"50\" cy=\"50\" r=\"3\" fill=\"none\" stroke=\"%23a855f7\" stroke-width=\"0.5\" /></svg>');
+            background-size: 100px 100px;">
+        </div>
+
+        <!-- Animated magic circles -->
+        <div class="absolute w-[600px] h-[600px] border border-cyber-purple/20 rounded-full animate-spin"
+            style="animation-duration: 30s;"></div>
+        <div class="absolute w-[500px] h-[500px] border border-neon-cyan/20 rounded-full animate-spin"
+            style="animation-duration: 20s; animation-direction: reverse;"></div>
+        <div class="absolute w-[400px] h-[400px] border border-neon-pink/20 rounded-full animate-spin"
+            style="animation-duration: 25s;"></div>
+
+        <!-- Laughing Man Style Ring -->
+        <div class="absolute w-[700px] h-[700px] pointer-events-none animate-spin-slow opacity-30 md:opacity-50">
+            <svg viewBox="0 0 500 500" class="w-full h-full">
+                <path id="text-curve" d="M250,50 A200,200 0 1,1 250,450 A200,200 0 1,1 250,50" fill="none" />
+                <text fill="#22d3ee" font-family="Orbitron" font-size="14" letter-spacing="4">
+                    <textPath href="#text-curve" startOffset="0%">
+                        WE BUILD SILENCE IN A WORLD OF NOISE /// CHILL_CATMOON PROJECT /// GHOST IN THE ARCHITECTURE ///
+                    </textPath>
+                </text>
+            </svg>
+        </div>
+
+        <div class="text-center space-y-6 intro-elements opacity-0 relative z-10 w-full max-w-4xl px-4">
+            <!-- Glitch Title -->
+            <h1 class="font-cinzel text-5xl md:text-8xl text-cyber-purple tracking-[0.15em] glitch-text neon-text"
+                data-text="Chill_CatMoon">
+                Chill_CatMoon
+            </h1>
+
+            <!-- Typewriter Subtitle -->
+            <div class="h-8 flex items-center justify-center">
+                <p id="typewriter-text"
+                    class="font-cyber text-neon-cyan tracking-[0.3em] uppercase text-sm md:text-base"></p>
+                <span class="animate-pulse text-neon-cyan">▌</span>
+            </div>
+
+            <!-- Hologram Enter Button -->
+            <button id="enter-btn" class="mt-8 px-12 py-4 relative overflow-hidden group font-cyber text-sm tracking-[0.2em] uppercase
+                       border-2 border-transparent bg-gradient-to-r from-cyber-purple/20 to-neon-cyan/20
+                       hover:from-cyber-purple hover:to-neon-cyan transition-all duration-500
+                       text-white hover:text-void-black"
+                style="background-image: linear-gradient(#0a0a0f, #0a0a0f), linear-gradient(90deg, #a855f7, #22d3ee); background-origin: border-box; background-clip: padding-box, border-box;">
+                <span class="relative z-10">[ ENTER_REALM ]</span>
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-cyber-purple to-neon-cyan opacity-0 group-hover:opacity-100 transition-opacity">
+                </div>
+            </button>
+
+            <!-- Status indicators -->
+            <div class="flex items-center justify-center gap-6 mt-8 text-xs font-cyber text-gray-500">
+                <span class="flex items-center gap-2"><span
+                        class="w-2 h-2 bg-neon-cyan rounded-full animate-pulse"></span> SYSTEM ONLINE</span>
+                <span class="flex items-center gap-2"><span
+                        class="w-2 h-2 bg-cyber-purple rounded-full animate-pulse"></span> MAGIC STABLE</span>
+            </div>
+        </div>
+        <!-- AI Log Chat (Tachikoma Style) -->
+        <div id="ai-log-container"
+            class="fixed bottom-4 right-4 z-[9999] w-72 md:w-80 font-cyber text-[10px] md:text-xs pointer-events-none hidden md:block">
+            <div
+                class="bg-void-black/80 border border-cyber-purple/30 backdrop-blur-sm p-3 rounded-tr-lg rounded-bl-lg relative overflow-hidden">
+                <div
+                    class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-purple via-neon-cyan to-transparent">
+                </div>
+                <div class="flex items-center justify-between mb-2 text-gray-500 border-b border-gray-800 pb-1">
+                    <span>[ AI_LOG_STREAM ]</span>
+                    <span class="animate-pulse text-neon-cyan">● LIVE</span>
+                </div>
+                <div id="ai-log-content"
+                    class="space-y-1 h-32 overflow-hidden flex flex-col justify-end text-neon-cyan/80 text-shadow-sm">
+                    <!-- Logs will be injected here -->
+                </div>
+                <div class="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-neon-cyan"></div>
+            </div>
+        </div>
+        <div class="fixed top-6 right-6 z-[100] flex flex-col gap-4">
+            <!-- BGM Toggle -->
+            <button id="bgm-toggle"
+                class="w-10 h-10 rounded-full border border-gold-accent text-gold-accent hover:bg-gold-accent hover:text-moon-dark transition-all duration-300 flex items-center justify-center group relative">
+                <i class="fa-solid fa-music"></i>
+                <span
+                    class="absolute right-12 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap font-cinzel text-xs text-gold-accent">BGM
+                    ON/OFF</span>
+            </button>
+
+            <!-- Telescope Toggle -->
+            <button id="scope-toggle"
+                class="w-10 h-10 rounded-full border border-gold-accent text-gold-accent hover:bg-gold-accent hover:text-moon-dark transition-all duration-300 flex items-center justify-center group relative">
+                <i class="fa-solid fa-eye"></i>
+                <span
+                    class="absolute right-12 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap font-cinzel text-xs text-gold-accent">OBSERVE</span>
+            </button>
+        </div>
+
+
+
+        <!-- Audio Player Widgets -->
+        <div id="audio-widget"
+            class="fixed bottom-8 right-8 z-[90] opacity-0 pointer-events-none transition-opacity duration-1000">
+            <div
+                class="flex items-center gap-4 bg-black/50 backdrop-blur-md px-5 py-2 rounded-full border border-gray-700 hover:border-gold-accent transition-colors pointer-events-auto">
+                <button id="bgm-toggle" class="text-gold-accent w-6">
+                    <i class="fa-solid fa-volume-high"></i>
+                </button>
+                <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.3"
+                    class="w-20 h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer accent-gold-accent">
+            </div>
+            <audio id="bgm-player" loop></audio>
+        </div>
+
+        <!-- Moon Phase Widget (Simple) -->
+        <div id="moon-widget"
+            class="fixed bottom-8 left-8 z-[90] pointer-events-none opacity-0 transition-opacity duration-1000 hidden md:block">
+            <div class="relative w-14 h-14">
+                <div id="moon-phase"
+                    class="w-full h-full rounded-full bg-gray-800 shadow-[0_0_15px_rgba(251,191,36,0.1)] border border-gray-700 overflow-hidden relative">
+                    <!-- Glowing Surface -->
+                    <div class="absolute inset-0 bg-parchment opacity-90 rounded-full"></div>
+                    <!-- Shadow Mask (Darkness) -->
+                    <div id="moon-shadow" class="absolute inset-0 bg-moon-dark rounded-full"
+                        style="transform: translateX(0)"></div>
+                </div>
+                <div
+                    class="absolute -bottom-5 w-full text-center font-cinzel text-[8px] text-gray-500 tracking-[0.2em]">
+                    JOURNEY</div>
+            </div>
+        </div>
+
+        <!-- Main Content (Smooth Scroll Wrapper) -->
+        <div id="smooth-wrapper">
+            <div id="smooth-content">
+
+                <!-- Hero Section -->
+                <!-- Hero Section (Arcane Tech Style) -->
+                <section class="h-screen w-full relative flex items-center justify-center overflow-hidden bg-void-black"
+                    id="hero">
+                    <!-- Parallax BG & Grid -->
+                    <div class="absolute inset-0 z-0">
+                        <!-- Darker overlay for neon contrast -->
+                        <img src="https://images.unsplash.com/photo-1516339901601-2e1b62dc0c45?q=80&w=2571&auto=format&fit=crop"
+                            class="w-full h-full object-cover opacity-30 scale-110 mix-blend-overlay grayscale"
+                            id="hero-bg" alt="Fantasy Sky">
+                        <div class="absolute inset-0 bg-gradient-to-b from-void-black via-void-black/80 to-void-black">
+                        </div>
+
+                        <!-- Cyber Grid Floor -->
+                        <div
+                            class="absolute bottom-0 left-0 w-full h-[50vh] bg-[linear-gradient(to_right,#a855f720_1px,transparent_1px),linear-gradient(to_bottom,#a855f720_1px,transparent_1px)] bg-[size:4rem_4rem] [transform:perspective(500px)_rotateX(60deg)] origin-bottom">
+                        </div>
+
+                        <!-- Void Eyes Container -->
+                        <div id="void-eyes-layer"
+                            class="absolute inset-0 pointer-events-none overflow-hidden z-10 transition-opacity duration-1000 opacity-0">
+                        </div>
+                    </div>
+
+                    <!-- Hero Content -->
+                    <div class="relative z-20 text-center px-4">
+                        <div
+                            class="inline-block p-1 border border-cyber-purple/30 bg-cyber-purple/10 backdrop-blur-sm rounded-none mb-6">
+                            <h2
+                                class="font-cyber text-xs md:text-sm text-neon-cyan tracking-[0.4em] uppercase animate-pulse px-4 py-1">
+                                System: Digital_Sanctuary
+                            </h2>
+                        </div>
+
+                        <h1 class="font-cinzel text-5xl md:text-9xl text-white font-bold tracking-tighter mb-8 relative glitch-text"
+                            data-text="Chill_CatMoon">
+                            <span
+                                class="inline-block hover:text-neon-pink transition-colors duration-300 neon-text">C</span>hill
+                            <span class="inline-block hover:text-neon-cyan transition-colors duration-300">_</span>
+                            <span
+                                class="inline-block hover:text-cyber-purple transition-colors duration-300 neon-text">C</span>atMoon
+                        </h1>
+
+                        <div
+                            class="relative w-full max-w-2xl mx-auto h-px bg-gradient-to-r from-transparent via-magic-gold to-transparent opacity-50">
+                            <div
+                                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 border border-magic-gold rotate-45 bg-void-black">
+                            </div>
+                        </div>
+
+                        <p
+                            class="font-lato text-gray-400 mt-8 tracking-[0.2em] text-sm md:text-base max-w-lg mx-auto leading-relaxed">
+                            <span class="text-neon-pink">&lt;</span> WE BUILD SILENCE <span
+                                class="text-neon-cyan">/&gt;</span> IN A WORLD OF NOISE
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Gallery Section (Arcane Tech Style) -->
+                <section class="relative py-24 px-6 md:px-20 bg-void-black z-20 overflow-hidden" id="works">
+                    <!-- Background decorations -->
+                    <div
+                        class="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-cyber-purple/5 to-transparent">
+                    </div>
+                    <div class="absolute bottom-0 left-0 w-1/3 h-full bg-gradient-to-r from-neon-cyan/5 to-transparent">
+                    </div>
+
+                    <div class="max-w-7xl mx-auto relative z-10">
+                        <div class="mb-16 text-center flex flex-col items-center">
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="h-px w-12 bg-neon-pink/50"></div>
+                                <i class="fa-solid fa-layer-group text-neon-cyan text-2xl animate-pulse"
+                                    id="section-icon"></i>
+                                <div class="h-px w-12 bg-neon-pink/50"></div>
+                            </div>
+
+                            <h2 class="font-cinzel text-4xl md:text-6xl text-white mb-2 transition-all duration-500 glitch-text"
+                                data-text="Grand Archives" id="section-title">Grand Archives</h2>
+                            <p class="font-cyber text-cyber-purple text-xs tracking-[0.3em] uppercase mb-10">[
+                                DATA_REPOSITORY_V2.0 ]</p>
+
+                            <!-- World Switcher -->
+                            <div class="world-switch-container border-cyber-purple/30 bg-void-black/80 backdrop-blur-md"
+                                id="world-switcher">
+                                <div class="world-switch-bg bg-gradient-to-r from-cyber-purple to-neon-pink"></div>
+                                <button class="world-switch-btn active font-cyber tracking-widest text-xs"
+                                    data-cat="minecraft">MINECRAFT</button>
+                                <button class="world-switch-btn font-cyber tracking-widest text-xs"
+                                    data-cat="hytale">HYTALE</button>
+                            </div>
+                        </div>
+
+                        <!-- Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-14 perspective-1000"
+                            id="gallery-grid">
+                            <!-- Cards injected via JS -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- About Section (Arcane Tech Style) -->
+                <section
+                    class="relative py-32 flex items-center justify-center bg-arcane-dark overflow-hidden border-t border-cyber-purple/20">
+                    <!-- Decorative BG Text -->
+                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[15vw] font-cyber text-white opacity-[0.03] pointer-events-none whitespace-nowrap glitch-text"
+                        data-text="SYSTEM_ADMIN">
+                        SYSTEM_ADMIN
+                    </div>
+
+                    <div class="relative z-20 max-w-3xl w-full px-6">
+                        <div
+                            class="border border-neon-cyan/30 bg-void-black/60 backdrop-blur-md p-10 md:p-16 text-center relative group overflow-hidden">
+                            <!-- Hologram scanline -->
+                            <div
+                                class="absolute inset-0 bg-gradient-to-b from-transparent via-neon-cyan/5 to-transparent h-full w-full animate-scanline opacity-30 pointer-events-none">
+                            </div>
+
+                            <!-- Corner Decorations -->
+                            <div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-neon-pink"></div>
+                            <div class="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-neon-cyan"></div>
+                            <div class="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-neon-cyan"></div>
+                            <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-neon-pink"></div>
+
+                            <h3 class="font-cyber text-2xl text-neon-cyan mb-8 tracking-widest">[ THE_CONCEPT ]</h3>
+                            <p class="font-lato text-gray-300 leading-8 mb-6 text-lg relative z-10">
+                                We build silence in a world of static.<br>
+                                <span class="text-cyber-purple">Chill_CatMoon</span> is a digital sanctuary forged from
+                                pixels and code.
+                                Through the lens of Minecraft, we render unauthorized realities and
+                                construct dreams that defy the algorithm.
+                            </p>
+
+                            <div class="flex justify-center gap-8 mt-10">
+                                <a href="https://www.instagram.com/im._.shota1009" target="_blank"
+                                    class="text-gray-400 hover:text-neon-pink hover:scale-110 transition-all text-3xl glow-text"><i
+                                        class="fa-brands fa-instagram"></i></a>
+                                <a href="#"
+                                    class="text-gray-400 hover:text-neon-cyan hover:scale-110 transition-all text-3xl glow-text"><i
+                                        class="fa-brands fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Footer -->
+                <footer class="bg-black py-12 text-center border-t border-gray-900 border-opacity-50">
+                    <div class="font-cinzel text-gold-accent text-xl tracking-widest mb-2">Chill_CatMoon</div>
+                    <p class="text-gray-600 text-xs font-lato">EST. 2026</p>
+                </footer>
+
+            </div>
+        </div>
+
+        <!-- LOGIC -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                gsap.registerPlugin(ScrollTrigger);
+
+                /* --- 0. DATA & HELPERS --- */
+                /* --- 0. DATA & HELPERS --- */
+
+
+
+                /* --- 1. SETUP LENIS SMOOTH SCROLL --- */
+                const lenis = new Lenis({
+                    duration: 1.2,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                    direction: 'vertical',
+                    gestureDirection: 'vertical',
+                    smooth: true,
+                    mouseMultiplier: 1,
+                    smoothTouch: false,
+                    touchMultiplier: 2,
+                });
+
+                function raf(time) {
+                    lenis.raf(time);
+                    requestAnimationFrame(raf);
+                }
+                requestAnimationFrame(raf);
+
+                /* --- 2. INTRO & AUDIO --- */
+                const intro = document.getElementById('intro-overlay');
+                const btn = document.getElementById('enter-btn');
+                const audioWidget = document.getElementById('audio-widget');
+                const player = document.getElementById('bgm-player');
+                const toggle = document.getElementById('bgm-toggle');
+                const slider = document.getElementById('volume-slider');
+
+                // === TYPEWRITER EFFECT ===
+                const typewriterEl = document.getElementById('typewriter-text');
+                const typewriterText = "MINECRAFT_CINEMATIC_ARCHITECTURE";
+                let charIndex = 0;
+
+                function typeWriter() {
+                    if (charIndex < typewriterText.length) {
+                        typewriterEl.textContent += typewriterText.charAt(charIndex);
+                        charIndex++;
+                        setTimeout(typeWriter, 80);
+                    }
+                }
+
+                // Start typewriter after intro fade in
+                setTimeout(typeWriter, 1500);
+
+                // === AI LOG SYSTEM (Ghost in the Shell Style) ===
+                const aiLogContent = document.getElementById('ai-log-content');
+                const aiMessages = [
+                    "System Check... OK",
+                    "Connecting to neural network...",
+                    "Ghost line detected.",
+                    "Synchronizing visual cortex...",
+                    "Firewall status: ACTIVE",
+                    "External memory accessed.",
+                    "Logic bomb neutralized.",
+                    "Protocol 2501 initiated.",
+                    "Stand alone complex verified.",
+                    "Scanning for cyber-brain...",
+                    "Optical camouflage: STANDBY",
+                    "Thought encryption: ENABLED",
+                    "Analyzing user sentiment...",
+                    "Rendering authorized reality...",
+                ];
+
+                function addLogMessage() {
+                    const msg = aiMessages[Math.floor(Math.random() * aiMessages.length)];
+                    const p = document.createElement('div');
+                    p.className = "opacity-0 translate-x-4 transition-all duration-300";
+                    p.innerHTML = `<span class="text-xs text-cyber-purple">[SYS]</span> ${msg}`;
+                    aiLogContent.appendChild(p);
+
+                    // Animate in
+                    requestAnimationFrame(() => {
+                        p.classList.remove('opacity-0', 'translate-x-4');
+                    });
+
+                    // Keep max 6 messages
+                    if (aiLogContent.children.length > 6) {
+                        aiLogContent.removeChild(aiLogContent.firstChild);
+                    }
+
+                    // Random interval
+                    setTimeout(addLogMessage, Math.random() * 2000 + 1000);
+                }
+
+                // Start AI Log
+                setTimeout(addLogMessage, 2000);
+
+                // Intro Reveal (Modified to force visible)
+                // Force initial state
+                gsap.set(intro, { display: 'flex', opacity: 1 });
+                gsap.set('.intro-elements', { opacity: 0 });
+                gsap.to('.intro-elements', { opacity: 1, duration: 2, delay: 0.5 });
+
+                // Force lock scroll
+                document.body.style.overflow = 'hidden';
+
+                // === NET DIVE INTERACTION ===
+                btn.addEventListener('click', () => {
+                    // Play Audio
+                    player.src = CONFIG.bgmUrl;
+                    player.volume = 0.3;
+                    player.play().catch(e => console.log("Audio prevented"));
+
+                    const netDive = document.getElementById('net-dive-overlay');
+                    const tunnel = netDive.querySelector('.dive-tunnel');
+
+                    // Activate Net Dive
+                    if (netDive) {
+                        netDive.style.opacity = 1;
+                        tunnel.style.animation = "diveMove 1.5s cubic-bezier(0.7, 0, 0.3, 1) forwards";
+                    }
+
+                    // Animate text out (Zoom effect)
+                    gsap.to('.intro-elements', {
+                        opacity: 0,
+                        scale: 5, // Zoom into text
+                        duration: 0.5,
+                        ease: "power2.in"
+                    });
+
+                    // Main Intro Fade Out
+                    gsap.to(intro, {
+                        opacity: 0,
+                        duration: 1,
+                        delay: 0.8,
+                        onComplete: () => {
+                            intro.style.display = 'none';
+                            startMain();
+                        }
+                    });
+                });
+
+                function startMain() {
+                    // Show Audio
+                    audioWidget.classList.remove('pointer-events-none');
+                    gsap.to(audioWidget, { opacity: 1, duration: 1 });
+                    gsap.to('#moon-widget', { opacity: 1, duration: 1, delay: 0.5 }); // Show moon widget after intro
+
+                    // Animate Scroll Elements
+                    gsap.from("#hero-bg", {
+                        scrollTrigger: {
+                            trigger: "#hero",
+                            start: "top top",
+                            end: "bottom top",
+                            scrub: true
+                        },
+                        y: 0,
+                        scale: 1,
+                        duration: 1
+                    });
+
+                    // Animate Cards Stagger
+                    gsap.from(".magic-card-wrapper", {
+                        scrollTrigger: {
+                            trigger: "#gallery-grid",
+                            start: "top 80%",
+                        },
+                        y: 100,
+                        opacity: 0,
+                        duration: 1,
+                        stagger: 0.1,
+                        ease: "power3.out"
+                    });
+                }
+
+                // Audio Controls
+                toggle.addEventListener('click', () => {
+                    if (player.paused) { player.play(); toggle.innerHTML = '<i class="fa-solid fa-music"></i>'; }
+                    else { player.pause(); toggle.innerHTML = '<i class="fa-solid fa-music"></i>'; } // Changed icon to music
+                });
+                slider.addEventListener('input', (e) => player.volume = e.target.value);
+
+                /* --- 3. DYNAMIC CONTENT & TILT --- */
+                const grid = document.getElementById('gallery-grid');
+                const switcher = document.getElementById('world-switcher');
+                const switchBtns = document.querySelectorAll('.world-switch-btn');
+                const sectionTitle = document.getElementById('section-title');
+                const sectionIcon = document.getElementById('section-icon');
+                const voidEyesLayer = document.getElementById('void-eyes-layer');
+                const transOverlay = document.getElementById('realm-transition-overlay');
+
+                // 'eyeInterval' variable for Hytale gimmick (Moved here to avoid TDZ error)
+                let eyeInterval;
+
+                // Current State
+                let currentCategory = 'minecraft';
+
+                function renderGallery(category) {
+                    // Clear Grid
+                    grid.innerHTML = '';
+
+                    // Filter
+                    const filtered = CONFIG.videos.filter(v => v.category === category);
+
+                    filtered.forEach((vid, index) => {
+                        const isSealed = vid.status === 'coming_soon';
+                        const card = document.createElement('a');
+
+                        if (!isSealed) {
+                            card.href = `https://www.youtube.com/watch?v=${vid.id}`;
+                            card.target = "_blank";
+                        } else {
+                            card.href = "#"; // Blind link
+                        }
+
+                        // Base classes
+                        let wrapperClass = "magic-card-wrapper h-64 md:h-72 group block opacity-0";
+                        if (isSealed) wrapperClass += " card-sealed";
+                        else wrapperClass += " cursor-none";
+
+                        card.className = wrapperClass;
+                        card.style.animation = `fadeInUp 0.6s ease forwards ${index * 0.1}s`;
+
+                        const thumbnail = category === 'hytale' && vid.id === 'o77MzDQT1cg'
+                            ? 'https://cdn.mos.cms.futurecdn.net/rJ6fFv7wJ8at8yJ8.jpg'
+                            : `https://img.youtube.com/vi/${vid.id}/hqdefault.jpg`;
+
+                        // Lock Overlay HTML
+                        const lockHTML = isSealed ? `<div class="lock-overlay"><i class="fa-solid fa-lock"></i></div>` : '';
+                        const hoverText = isSealed ? 'SEALED' : 'WATCH <i class="fa-solid fa-play text-[8px]"></i>';
+                        const hoverColor = isSealed ? 'text-gray-500' : 'text-gold-accent';
+                        const titleColor = isSealed ? 'text-gray-400' : 'text-white group-hover:text-gold-accent';
+
+                        card.innerHTML = `
+                        <div class="magic-card w-full h-full relative p-4 flex flex-col justify-end overflow-hidden rounded-lg">
+                            ${lockHTML}
+                            <div class="absolute inset-0 z-0 pointer-events-none">
+                                <img src="${thumbnail}" class="w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-500 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                            </div>
+                            <div class="relative z-10 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                                <h3 class="font-cinzel text-xl ${titleColor} transition-colors">${vid.title}</h3>
+                                <div class="h-[1px] w-0 bg-gold-accent group-hover:w-full transition-all duration-700 mt-2"></div>
+                                <div class="mt-2 text-[10px] text-gray-400 font-lato tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center gap-1">
+                                    ${hoverText}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                        grid.appendChild(card);
+
+                        // Sealed Logic
+                        if (isSealed) {
+                            card.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                // Shake Effect
+                                const inner = card.querySelector('.magic-card');
+                                inner.classList.remove('shake-anim');
+                                void inner.offsetWidth; // trigger reflow
+                                inner.classList.add('shake-anim');
+                            });
+                        }
+
+                        // Cards Tilt Effect RE-BIND
+                        const inner = card.querySelector('.magic-card');
+                        card.addEventListener('mousemove', (e) => {
+                            const rect = card.getBoundingClientRect();
+                            const x = e.clientX - rect.left;
+                            const y = e.clientY - rect.top;
+                            const centerX = rect.width / 2;
+                            const centerY = rect.height / 2;
+
+                            const rotateX = ((y - centerY) / centerY) * -10;
+                            const rotateY = ((x - centerX) / centerX) * 10;
+
+                            gsap.to(inner, {
+                                rotateX: rotateX,
+                                rotateY: rotateY,
+                                duration: 0.5,
+                                ease: "power2.out"
+                            });
+                        });
+
+                        card.addEventListener('mouseleave', () => {
+                            gsap.to(inner, { rotateX: 0, rotateY: 0, duration: 0.5 });
+                        });
+
+                    }); // End forEach
+
+                    // Update Theme UI (Called after transition in Switcher Logic)
+                }
+
+                // Switcher Logic (Genshin Style Transition)
+                switchBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const cat = btn.dataset.cat;
+                        if (cat === currentCategory) return;
+
+                        // 1. Start Transition
+                        // Set color based on destination
+                        if (cat === 'hytale') {
+                            transOverlay.style.background = '#022c22'; // Hytale Green
+                        } else {
+                            transOverlay.style.background = '#0f172a'; // Minecraft Blue
+                        }
+
+                        transOverlay.classList.add('active');
+
+                        setTimeout(() => {
+                            // 2. State Change (While Hidden)
+                            currentCategory = cat;
+
+                            // Update UI
+                            switchBtns.forEach(b => b.classList.remove('active'));
+                            btn.classList.add('active');
+
+                            if (cat === 'hytale') {
+                                switcher.classList.add('hytale-active');
+                                updateTheme('hytale');
+                            } else {
+                                switcher.classList.remove('hytale-active');
+                                updateTheme('minecraft');
+                            }
+
+                            renderGallery(cat);
+
+                            // 3. End Transition
+                            setTimeout(() => {
+                                transOverlay.classList.remove('active');
+                            }, 600);
+
+                        }, 600); // Halfway point
+                    });
+                });
+
+                function updateTheme(cat) {
+                    if (cat === 'minecraft') {
+                        document.body.classList.remove('theme-hytale');
+                        sectionTitle.innerText = "Grand Archives";
+                        sectionTitle.style.color = "white";
+                        sectionIcon.className = "fa-solid fa-moon text-gold-accent text-2xl mb-4 animate-pulse";
+                        stopVoidEyes();
+                        stopFallingLeaves(); // Stop leaves
+                        toggleSpirits(true); // Show spirits
+                    } else {
+                        document.body.classList.add('theme-hytale');
+                        sectionTitle.innerText = "Adventure Log";
+                        sectionTitle.style.color = "#ecfdf5";
+                        sectionIcon.className = "fa-solid fa-leaf text-gold-accent text-2xl mb-4 animate-bounce";
+                        startVoidEyes();
+                        startFallingLeaves(); // Start leaves
+                        toggleSpirits(false); // Hide spirits
+                    }
+                }
+
+                // Initial Render
+                renderGallery('minecraft');
+
+                // Add Keyframe for JS injection
+                const style = document.createElement('style');
+                style.innerHTML = `
+                @keyframes fadeInUp {
+                    from { opacity: 0; transform: translateY(20px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+            `;
+                document.head.appendChild(style);
+
+                /* --- 4. LANTERN & CONSTELLATION --- */
+                const lantern = document.getElementById('lantern-layer');
+                const canvas = document.getElementById('constellation-canvas');
+                const ctx = canvas.getContext('2d');
+                const cursorDot = document.querySelector('.cursor-dot');
+                const cursorRing = document.querySelector('.cursor-ring');
+
+                let width, height;
+                let particles = [];
+                let mouse = { x: -1000, y: -1000 };
+
+                function resize() {
+                    width = canvas.width = window.innerWidth;
+                    height = canvas.height = window.innerHeight;
+                    initConstellations();
+                }
+                window.addEventListener('resize', resize);
+
+                function initConstellations() {
+                    particles = [];
+                    for (let i = 0; i < 80; i++) {
+                        particles.push({
+                            x: Math.random() * width,
+                            y: Math.random() * height,
+                            vx: (Math.random() - 0.5) * 0.5,
+                            vy: (Math.random() - 0.5) * 0.5,
+                            size: Math.random() * 2,
+                            alpha: Math.random() * 0.5 + 0.1
+                        });
+                    }
+                }
+                resize();
+
+                // Observatory Logic
+                const obsOverlay = document.getElementById('observatory-overlay');
+                const lensContent = document.getElementById('lens-content');
+                const obsClose = document.getElementById('obs-close');
+                let isObserving = false;
+
+                // Open
+                document.getElementById('scope-toggle').addEventListener('click', () => {
+                    document.body.classList.add('observatory-active');
+                    isObserving = true;
+                    initObservatoryStars();
+                });
+
+                // Close
+                obsClose.addEventListener('click', () => {
+                    document.body.classList.remove('observatory-active');
+                    isObserving = false;
+                });
+
+                // Init Observatory Stars (separate)
+                function initObservatoryStars() {
+                    // Clear existing stars if any? 
+                    if (lensContent.querySelector('.obs-star')) return;
+
+                    for (let i = 0; i < 200; i++) {
+                        const s = document.createElement('div');
+                        s.className = 'obs-star absolute bg-white rounded-full opacity-80';
+                        const size = Math.random() * 2;
+                        s.style.width = size + 'px';
+                        s.style.height = size + 'px';
+                        s.style.left = Math.random() * 100 + '%';
+                        s.style.top = Math.random() * 100 + '%';
+                        lensContent.appendChild(s);
+                    }
+                }
+
+                // Mouse Move
+                window.addEventListener('mousemove', (e) => {
+                    mouse.x = e.clientX;
+                    mouse.y = e.clientY;
+
+                    // Standard Lantern
+                    lantern.style.setProperty('--mouse-x', mouse.x + 'px');
+                    lantern.style.setProperty('--mouse-y', mouse.y + 'px');
+                    gsap.set(cursorDot, { x: mouse.x, y: mouse.y });
+                    gsap.to(cursorRing, { x: mouse.x, y: mouse.y, duration: 0.15 });
+
+                    // Observatory Parallax
+                    if (isObserving) {
+                        const cx = window.innerWidth / 2;
+                        const cy = window.innerHeight / 2;
+                        const dx = (mouse.x - cx) / cx;
+                        const dy = (mouse.y - cy) / cy;
+
+                        gsap.to(lensContent, {
+                            x: -dx * 50, // Move content opposite
+                            y: -dy * 50,
+                            duration: 1,
+                            ease: "power2.out"
+                        });
+                    }
+                });
+
+                // Run Inits
+
+                // Interactive Hover States
+                document.querySelectorAll('a, button, .magic-card-wrapper').forEach(el => {
+                    el.addEventListener('mouseenter', () => gsap.to(cursorRing, { scale: 1.5, borderColor: '#fff' }));
+                    el.addEventListener('mouseleave', () => gsap.to(cursorRing, { scale: 1, borderColor: 'rgba(251, 191, 36, 0.5)' }));
+                });
+
+                function animateConstellations() {
+                    ctx.clearRect(0, 0, width, height);
+
+                    // Normal Stars
+                    particles.forEach(p => {
+                        p.x += p.vx;
+                        p.y += p.vy;
+
+                        // Wrap
+                        if (p.x < 0) p.x = width; if (p.x > width) p.x = 0;
+                        if (p.y < 0) p.y = height; if (p.y > height) p.y = 0;
+
+                        // Draw Star
+                        ctx.fillStyle = `rgba(251, 191, 36, ${p.alpha})`;
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        // Connect to mouse
+                        const dx = mouse.x - p.x;
+                        const dy = mouse.y - p.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+
+                        if (dist < 150) {
+                            ctx.strokeStyle = `rgba(251, 191, 36, ${1 - dist / 150})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            // Subtle jitter for magical feel
+                            ctx.lineTo(mouse.x, mouse.y);
+                            ctx.stroke();
+                        }
+                    });
+
+
+
+                    requestAnimationFrame(animateConstellations);
+                }
+                animateConstellations();
+
+                /* --- 5. MOON PHASE SCROLL GIMMICK --- */
+                gsap.to('#moon-widget', { opacity: 1, duration: 1, delay: 2 });
+                const moonShadow = document.getElementById('moon-shadow');
+                const moonPhase = document.getElementById('moon-phase');
+
+                ScrollTrigger.create({
+                    trigger: "body",
+                    start: "top top",
+                    end: "bottom bottom",
+                    onUpdate: (self) => {
+                        // Simple "Waxing" effect: Shadow moves from 0% (covering) to 150% (reveals full moon)
+                        // Start: Moon is covered (New Moonish)
+                        // End: Moon is full
+                        const progress = self.progress;
+                        const move = -60 + (progress * 180); // -60% to 120%
+
+                        gsap.set(moonShadow, { x: `${move}%` });
+
+                        // Add glow intensity
+                        gsap.set(moonPhase, {
+                            boxShadow: `0 0 ${10 + progress * 30}px rgba(251, 191, 36, ${0.2 + progress * 0.6})`
+                        });
+                    }
+                });
+
+
+
+                /* --- 6. MAGIC BURST GIMMICK --- */
+                window.addEventListener('click', (e) => {
+                    // Don't burst if clicking interactive elements to avoid visual clutter? 
+                    // No, burst everywhere is satisfying.
+
+                    // XP ORB GIMMICK
+                    createXPOrbs(e.clientX, e.clientY);
+
+                    // Magic Burst (Visual)
+                    createMagicBurst(e.clientX, e.clientY);
+                });
+
+                /* --- XP ORB GIMMICK --- */
+                function createXPOrbs(x, y) {
+                    const count = 5 + Math.floor(Math.random() * 5); // 5-10 orbs
+                    for (let i = 0; i < count; i++) {
+                        const orb = document.createElement('div');
+                        orb.className = "xp-orb";
+                        document.body.appendChild(orb);
+
+                        // Random scatter
+                        const angle = Math.random() * Math.PI * 2;
+                        const speed = 20 + Math.random() * 50;
+                        const dx = Math.cos(angle) * speed;
+                        const dy = - Math.random() * 60 - 20; // Always pop up slightly
+
+                        gsap.fromTo(orb,
+                            { x: x, y: y, opacity: 1, scale: 0.5 },
+                            {
+                                x: x + dx,
+                                y: y + dy,
+                                opacity: 0,
+                                scale: 0.2,
+                                duration: 0.8 + Math.random() * 0.4,
+                                ease: "power2.out",
+                                onComplete: () => orb.remove()
+                            }
+                        );
+                    }
+                }
+
+                /* --- VOID EYE GIMMICK (Hytale) --- */
+                // uses global 'voidEyesLayer' and 'eyeInterval'
+
+                function startVoidEyes() {
+                    if (eyeInterval) clearInterval(eyeInterval);
+
+                    // Fade in layer
+                    if (voidEyesLayer) voidEyesLayer.style.opacity = 0.6;
+
+                    eyeInterval = setInterval(() => {
+                        spawnVoidEye();
+                    }, 4000); // Every 4 seconds
+                }
+
+                function stopVoidEyes() {
+                    if (eyeInterval) clearInterval(eyeInterval);
+                    if (voidEyesLayer) voidEyesLayer.style.opacity = 0;
+                    // clear existing
+                    if (voidEyesLayer) voidEyesLayer.innerHTML = '';
+                }
+
+                function spawnVoidEye() {
+                    if (!voidEyesLayer) return;
+
+                    const eyeSet = document.createElement('div');
+                    eyeSet.className = "void-eye-container flex gap-1";
+
+                    // Random Pos
+                    const x = 10 + Math.random() * 80; // 10-90% width
+                    const y = 10 + Math.random() * 80;
+
+                    eyeSet.style.left = x + '%';
+                    eyeSet.style.top = y + '%';
+
+                    eyeSet.innerHTML = `<div class="void-eye"></div><div class="void-eye"></div>`;
+                    voidEyesLayer.appendChild(eyeSet);
+
+                    // Anim In/Out
+                    gsap.to(eyeSet, {
+                        opacity: 1, duration: 1, onComplete: () => {
+                            gsap.to(eyeSet, { opacity: 0, duration: 1, delay: 2, onComplete: () => eyeSet.remove() });
+                        }
+                    });
+                }
+
+                function createMagicBurst(x, y) {
+                    const burstCount = 8;
+                    const runes = ["✦", "✧", "★", "✴", "✷"];
+
+                    // Sparks
+                    for (let i = 0; i < burstCount; i++) {
+                        const el = document.createElement('div');
+                        el.classList.add('magic-spark');
+                        document.body.appendChild(el);
+
+                        const angle = (Math.PI * 2 * i) / burstCount;
+                        const velocity = 30 + Math.random() * 40;
+
+                        gsap.set(el, { x: x, y: y, opacity: 1, scale: Math.random() });
+                        gsap.to(el, {
+                            x: x + Math.cos(angle) * velocity,
+                            y: y + Math.sin(angle) * velocity,
+                            opacity: 0,
+                            duration: 0.5 + Math.random() * 0.3,
+                            ease: "power2.out",
+                            onComplete: () => el.remove()
+                        });
+                    }
+
+                    // Floating Rune
+                    const runeChar = runes[Math.floor(Math.random() * runes.length)];
+                    const rune = document.createElement('div');
+                    rune.textContent = runeChar;
+                    rune.className = "fixed text-gold-accent text-lg pointer-events-none z-[100]";
+                    document.body.appendChild(rune);
+
+                    gsap.set(rune, { x: x, y: y, opacity: 1, scale: 0, rotation: Math.random() * 360 });
+                    gsap.to(rune, {
+                        y: y - 40,
+                        opacity: 0,
+                        scale: 1.5,
+                        rotation: "+=90",
+                        duration: 0.8,
+                        ease: "back.out(2)",
+                        onComplete: () => rune.remove()
+                    });
+
+                    // Ripple
+                    const ripple = document.createElement('div');
+                    ripple.className = "fixed rounded-full border border-gold-accent pointer-events-none z-[99]";
+                    document.body.appendChild(ripple);
+                    gsap.set(ripple, { x: x, y: y, width: 0, height: 0, opacity: 0.5, xPercent: -50, yPercent: -50 });
+                    gsap.to(ripple, {
+                        width: 100,
+                        height: 100,
+                        opacity: 0,
+                        duration: 0.6,
+                        ease: "power2.out",
+                        onComplete: () => ripple.remove()
+                    });
+                }
+
+                /* --- 7. OBSERVATORY ENHANCEMENTS (Realtime & Gimmicks) --- */
+
+                // Elements
+                const obsMoonShadow = document.getElementById('obs-moon-shadow');
+                const obsHudText = document.querySelector('.obs-hud');
+                const ufoContainer = document.getElementById('ufo-container');
+
+                function updateObservatoryHUD() {
+                    if (!isObserving) return;
+
+                    const now = new Date();
+                    const timeStr = now.toLocaleTimeString('en-US', { hour12: false });
+
+                    // Calculate Moon Phase (Approximate Logic)
+                    // Known New Moon reference: Jan 11 2024. Cycle: 29.53 days.
+                    const knownNewMoon = new Date('2024-01-11T11:57:00Z').getTime();
+                    const cycle = 29.53 * 24 * 60 * 60 * 1000;
+                    const diff = now.getTime() - knownNewMoon;
+                    const phaseProgress = ((diff % cycle) + cycle) % cycle / cycle; // Normalize 0.0 to 1.0
+
+                    let shadowX = 150;
+
+                    if (phaseProgress <= 0.5) {
+                        // Waxing (0 -> 0.5): Shadow moves Right (0% -> 200%)
+                        shadowX = (phaseProgress * 400);
+                    } else {
+                        // Waning (0.5 -> 1.0): Shadow moves from left to center?
+                        // Shadow moves -200% (Left) to 0% (Center)
+                        shadowX = -200 + ((phaseProgress - 0.5) * 400);
+                    }
+
+                    if (obsMoonShadow) {
+                        obsMoonShadow.style.transform = `translateX(${shadowX}%)`;
+                    }
+
+                    const phaseName = getPhaseName(phaseProgress);
+
+                    if (obsHudText) {
+                        obsHudText.innerHTML = `
+                        LOC: ${timeStr}<br>
+                        PHASE: ${phaseName} (${Math.floor(phaseProgress * 100)}%)<br>
+                        TGT: C.A.T. SYSTEM
+                    `;
+                    }
+
+                    requestAnimationFrame(updateObservatoryHUD);
+                }
+
+                function getPhaseName(p) {
+                    if (p < 0.05) return "NEW MOON";
+                    if (p < 0.2) return "WAXING CRESCENT";
+                    if (p < 0.3) return "FIRST QUARTER";
+                    if (p < 0.45) return "WAXING GIBBOUS";
+                    if (p < 0.55) return "FULL MOON";
+                    if (p < 0.7) return "WANING GIBBOUS";
+                    if (p < 0.8) return "LAST QUARTER";
+                    if (p < 0.95) return "WANING CRESCENT";
+                    return "NEW MOON";
+                }
+
+                // Trigger HUD update on Observe
+                const tempScopeToggle = document.getElementById('scope-toggle');
+                if (tempScopeToggle) {
+                    tempScopeToggle.addEventListener('click', () => {
+                        requestAnimationFrame(updateObservatoryHUD);
+                    });
+                }
+
+                // Space Object Spawner (UFO, Satellite, Debris, Black Hole)
+                function spawnSpaceObject() {
+                    if (!isObserving || !ufoContainer) return;
+
+                    const typeRoll = Math.random();
+                    let type = "DEBRIS";
+                    if (typeRoll < 0.05) type = "BLACK_HOLE"; // 5% Very Rare
+                    else if (typeRoll < 0.20) type = "UFO"; // 15%
+                    else if (typeRoll < 0.50) type = "SATELLITE"; // 30%
+                    // Debris: 50%
+
+                    const el = document.createElement('div');
+                    ufoContainer.appendChild(el);
+
+                    // Common Click Interaction (Black Hole sucks things in?)
+                    // For now, simple burst
+                    el.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        createMagicBurst(e.clientX, e.clientY);
+
+                        if (type === "BLACK_HOLE") {
+                            // Big implosion
+                            gsap.to(el, { scale: 0, rotation: 720, duration: 1.5, ease: "back.in(2)", onComplete: () => el.remove() });
+                        } else {
+                            gsap.to(el, { scale: 0, opacity: 0, duration: 0.2, onComplete: () => el.remove() });
+                        }
+                    });
+
+                    const startY = Math.random() * 80 + 10;
+                    let endY = startY + (Math.random() * 40 - 20);
+                    let duration = 5;
+                    let startX = '-20%';
+                    let endX = '120%';
+
+                    if (type === "BLACK_HOLE") {
+                        el.className = 'black-hole-wrapper';
+                        el.innerHTML = `
+                        <div class="bh-disk"></div>
+                        <div class="bh-core"></div>
+                        <div class="bh-photon"></div>
+                    `;
+                        duration = 15; // Very slow and ominous
+
+                        // Add a slight distort pulse
+                        gsap.to(el, { scale: 1.1, duration: 2, yoyo: true, repeat: -1, ease: "sine.inOut" });
+
+                        gsap.fromTo(el,
+                            { left: '-30%', top: `${startY}%`, opacity: 0, scale: 0.8 },
+                            {
+                                left: '130%',
+                                top: `${endY}%`,
+                                opacity: 1, // Stay visible
+                                // Keyframes for opacity? No, just fade in/out at edges
+                                duration: duration,
+                                ease: "none",
+                                onComplete: () => el.remove()
+                            }
+                        );
+
+                        // Fade in/out
+                        gsap.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 2, yoyo: true, repeat: 1, repeatDelay: duration - 4 });
+
+                    } else if (type === "UFO") {
+                        el.className = 'ufo-object';
+                        duration = 3 + Math.random() * 2; // Fast
+
+                        // Zigzag movement for UFO
+                        gsap.fromTo(el,
+                            { left: startX, top: `${startY}%`, opacity: 1, scale: 0.5, rotation: -10 },
+                            {
+                                left: endX,
+                                top: `${endY}%`,
+                                rotation: 10,
+                                duration: duration,
+                                ease: "power1.inOut",
+                                onComplete: () => el.remove()
+                            }
+                        );
+                        // Add some Yoyo wiggling
+                        gsap.to(el, { y: 20, duration: 0.5, yoyo: true, repeat: -1 });
+
+                    } else if (type === "SATELLITE") {
+                        el.className = 'satellite-object';
+                        el.innerHTML = '<div class="satellite-core"></div>';
+                        duration = 10 + Math.random() * 10; // Slow
+
+                        gsap.fromTo(el,
+                            { left: startX, top: `${startY}%`, opacity: 1, scale: 0.8, rotation: 0 },
+                            {
+                                left: endX,
+                                top: `${endY}%`,
+                                rotation: 360, // Slow tumble
+                                duration: duration,
+                                ease: "none",
+                                onComplete: () => el.remove()
+                            }
+                        );
+                    } else {
+                        // Debris
+                        el.className = 'debris-object';
+                        duration = 6 + Math.random() * 6;
+                        // Random size
+                        const size = 10 + Math.random() * 20;
+                        el.style.width = `${size}px`;
+                        el.style.height = `${size}px`;
+
+                        gsap.fromTo(el,
+                            { left: startX, top: `${startY}%`, opacity: 0.8, scale: 1, rotation: 0 },
+                            {
+                                left: endX,
+                                top: `${endY}%`,
+                                rotation: Math.random() > 0.5 ? 720 : -720,
+                                duration: duration,
+                                ease: "none", // Constant speed
+                                onComplete: () => el.remove()
+                            }
+                        );
+                    }
+                }
+
+                // Loop for Space Objects
+                setInterval(() => {
+                    // 40% chance every 3 seconds if observing
+                    if (isObserving && Math.random() > 0.6) {
+                        spawnSpaceObject();
+                    }
+                }, 3000);
+
+                /* --- 8. SPIRIT PARTICLES (Ambient) --- */
+                function initSpirits() {
+                    const layer = document.getElementById('spirit-layer');
+                    const particleCount = 20;
+
+                    for (let i = 0; i < particleCount; i++) {
+                        const p = document.createElement('div');
+                        p.className = 'spirit-particle';
+                        const size = 2 + Math.random() * 3;
+                        p.style.width = size + 'px';
+                        p.style.height = size + 'px';
+                        layer.appendChild(p);
+
+                        animateSpirit(p);
+                    }
+                }
+
+                function animateSpirit(p) {
+                    const maxX = window.innerWidth;
+                    const maxY = window.innerHeight;
+
+                    // Reset pos randomly
+                    const startX = Math.random() * maxX;
+                    const startY = Math.random() * maxY;
+
+                    gsap.set(p, { x: startX, y: startY, opacity: 0 });
+
+                    // Float
+                    const duration = 10 + Math.random() * 20;
+                    const destX = startX + (Math.random() - 0.5) * 200;
+                    const destY = startY - 100 - Math.random() * 200; // Generally up
+
+                    gsap.to(p, {
+                        x: destX,
+                        y: destY,
+                        opacity: Math.random() * 0.5 + 0.2, // Fade in to random opacity
+                        duration: duration * 0.2,
+                        yoyo: true, // Fade in then out? No complex.
+                        repeat: 1, // Hacky life cycle
+                        onComplete: () => {
+                            // Fade out
+                            gsap.to(p, {
+                                opacity: 0,
+                                duration: 2,
+                                onComplete: () => animateSpirit(p)
+                            });
+                        }
+                    });
+
+                    // Continuous Wiggle independent of float
+                    gsap.to(p, {
+                        x: "+=20",
+                        duration: 4,
+                        yoyo: true,
+                        repeat: -1,
+                        ease: "sine.inOut"
+                    });
+                }
+                initSpirits();
+
+                function toggleSpirits(show) {
+                    const layer = document.getElementById('spirit-layer');
+                    // We shouldn't clear, just toggle opacity class if we had one, or manual op
+                    // For simplicity, let's just fade all spirits out
+                    const spirits = document.querySelectorAll('.spirit-particle');
+                    spirits.forEach(p => {
+                        gsap.to(p, { opacity: show ? Math.random() * 0.5 + 0.2 : 0, duration: 1 });
+                    });
+                }
+
+                /* --- 8.5 FALLING LEAVES (Hytale Nature) --- */
+                let leaveInterval;
+
+                function startFallingLeaves() {
+                    if (leaveInterval) clearInterval(leaveInterval);
+                    // Spawn frequently
+                    leaveInterval = setInterval(spawnLeaf, 300);
+                }
+
+                function stopFallingLeaves() {
+                    if (leaveInterval) clearInterval(leaveInterval);
+                    // Let existing fall out? No need to force kill, looks natural
+                }
+
+                function spawnLeaf() {
+                    const layer = document.getElementById('spirit-layer'); // Reuse layer
+                    const l = document.createElement('div');
+                    l.className = 'leaf-particle';
+                    layer.appendChild(l);
+
+                    // Random Start X (and maybe slightly above viewport)
+                    const startX = Math.random() * window.innerWidth;
+                    const startY = -20;
+
+                    gsap.set(l, { x: startX, y: startY, opacity: 0, rotation: Math.random() * 360 });
+
+                    // Fall
+                    const duration = 5 + Math.random() * 5;
+                    const destX = startX + (Math.random() - 0.5) * 400; // Sway
+                    const destY = window.innerHeight + 50;
+
+                    // 1. Fall Motion
+                    gsap.to(l, {
+                        y: destY,
+                        x: destX,
+                        rotation: "+=360",
+                        duration: duration,
+                        ease: "none", // Linear gravity-ish
+                        onComplete: () => l.remove()
+                    });
+
+                    // 2. Fade In
+                    gsap.to(l, { opacity: 0.8, duration: 1 });
+
+                    // 3. Sway motion
+                    gsap.to(l, {
+                        x: "+=50",
+                        duration: 2,
+                        yoyo: true,
+                        repeat: -1,
+                        ease: "sine.inOut"
+                    });
+                }
+
+                /* --- 9. STARDUST CURSOR TRAIL --- */
+                let lastX = 0;
+                let lastY = 0;
+                window.addEventListener('mousemove', (e) => {
+                    const dist = Math.hypot(e.clientX - lastX, e.clientY - lastY);
+                    // Limit spawn rate based on distance
+                    if (dist > 5) {
+                        spawnStardust(e.clientX, e.clientY);
+                        lastX = e.clientX;
+                        lastY = e.clientY;
+                    }
+                });
+
+                function spawnStardust(x, y) {
+                    const p = document.createElement('div');
+                    p.className = 'stardust-particle';
+                    document.body.appendChild(p);
+
+                    // Color based on theme
+                    const color = currentCategory === 'hytale' ? '#2dd4bf' : '#fbbf24';
+                    p.style.background = color;
+                    p.style.boxShadow = `0 0 6px ${color}`;
+
+                    // Random drift
+                    const angle = Math.random() * Math.PI * 2;
+                    const velocity = Math.random() * 20;
+
+                    gsap.fromTo(p,
+                        { x: x, y: y, opacity: 1, scale: Math.random() * 0.8 + 0.2 },
+                        {
+                            x: x + Math.cos(angle) * velocity,
+                            y: y + Math.sin(angle) * velocity,
+                            opacity: 0,
+                            duration: 0.5 + Math.random() * 0.5,
+                            ease: "power1.out",
+                            onComplete: () => p.remove()
+                        }
+                    );
+                }
+
+                /* --- 10. PARALLAX FLOATING RUNES (REMOVED) --- */
+
+            });
+        </script>
+</body>
