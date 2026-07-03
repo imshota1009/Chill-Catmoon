@@ -1463,37 +1463,39 @@
             class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-2 bg-white/80 mix-blend-overlay animate-pulse">
         </div>
     </div>
-    <!-- Top Left -->
-    <div class="absolute top-8 left-8 p-2 border-l border-t border-neon-cyan/50 parallax-hud" data-speed="0.02">
-        <div class="font-cyber text-[10px] text-neon-cyan tracking-widest mb-1">OPTICAL_TARGET</div>
-        <div class="text-xs text-white/80 font-mono" id="hud-coords">X:0000 Y:0000</div>
-    </div>
-    <!-- Top Right -->
-    <div class="absolute top-8 right-8 text-right parallax-hud" data-speed="0.03">
-        <div class="font-cyber text-[10px] text-neon-cyan tracking-widest mb-1">SYS_TIME</div>
-        <div class="text-xl text-white font-mono" id="hud-time">00:00:00</div>
-        <div class="w-24 h-px bg-neon-cyan/30 ml-auto mt-1"></div>
-    </div>
-    <!-- Bottom Left -->
-    <div class="absolute bottom-8 left-8 parallax-hud" data-speed="0.02">
-        <div class="flex items-end gap-2">
-            <div class="text-3xl text-cyber-purple font-cyber" id="hud-bpm">72</div>
-            <div class="text-[10px] text-neon-cyan mb-1">BPM</div>
+    <!-- CYBER EYE HUD LAYER START -->
+    <div id="cyber-hud-layer" class="fixed inset-0 pointer-events-none z-[9000] hidden md:block mix-blend-screen">
+        <!-- Top Left -->
+        <div class="absolute top-8 left-8 p-2 border-l border-t border-neon-cyan/50 parallax-hud" data-speed="0.02">
+            <div class="font-cyber text-[10px] text-neon-cyan tracking-widest mb-1">OPTICAL_TARGET</div>
+            <div class="text-xs text-white/80 font-mono" id="hud-coords">X:0000 Y:0000</div>
         </div>
-        <div class="w-32 h-6 border border-neon-cyan/20 mt-1 relative overflow-hidden">
-            <div class="absolute inset-0 bg-neon-cyan/10 animate-pulse"></div>
-            <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none">
-                <path d="M0,10 L10,10 L15,0 L20,20 L25,10 L128,10" fill="none" stroke="#22d3ee" stroke-width="1"
-                    vector-effect="non-scaling-stroke" class="animate-ekg" />
-            </svg>
+        <!-- Top Right -->
+        <div class="absolute top-8 right-8 text-right parallax-hud" data-speed="0.03">
+            <div class="font-cyber text-[10px] text-neon-cyan tracking-widest mb-1">SYS_TIME</div>
+            <div class="text-xl text-white font-mono" id="hud-time">00:00:00</div>
+            <div class="w-24 h-px bg-neon-cyan/30 ml-auto mt-1"></div>
         </div>
-    </div>
-    <!-- Center Reticle (Follows Mouse with lag) -->
-    <div id="hud-reticle"
-        class="absolute w-12 h-12 border border-neon-cyan/30 rounded-full flex items-center justify-center -translate-x-1/2 -translate-y-1/2 opacity-50">
-        <div class="w-1 h-1 bg-neon-cyan rounded-full"></div>
-        <div class="absolute inset-0 border-t border-b border-neon-cyan/60 scale-75 animate-spin-slow"></div>
-    </div>
+        <!-- Bottom Left -->
+        <div class="absolute bottom-8 left-8 parallax-hud" data-speed="0.02">
+            <div class="flex items-end gap-2">
+                <div class="text-3xl text-cyber-purple font-cyber" id="hud-bpm">72</div>
+                <div class="text-[10px] text-neon-cyan mb-1">BPM</div>
+            </div>
+            <div class="w-32 h-6 border border-neon-cyan/20 mt-1 relative overflow-hidden">
+                <div class="absolute inset-0 bg-neon-cyan/10 animate-pulse"></div>
+                <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+                    <path d="M0,10 L10,10 L15,0 L20,20 L25,10 L128,10" fill="none" stroke="#22d3ee" stroke-width="1"
+                        vector-effect="non-scaling-stroke" class="animate-ekg" />
+                </svg>
+            </div>
+        </div>
+        <!-- Center Reticle (Follows Mouse with lag) -->
+        <div id="hud-reticle"
+            class="absolute w-12 h-12 border border-neon-cyan/30 rounded-full flex items-center justify-center -translate-x-1/2 -translate-y-1/2 opacity-50">
+            <div class="w-1 h-1 bg-neon-cyan rounded-full"></div>
+            <div class="absolute inset-0 border-t border-b border-neon-cyan/60 scale-75 animate-spin-slow"></div>
+        </div>
     </div>
 
     <!-- AI Log Chat (Tachikoma Style) -->
@@ -1586,10 +1588,7 @@
                         class="city-layer absolute bottom-0 left-0 w-[60%] md:w-[50%] object-contain object-bottom"
                         data-speed="0.4" style="z-index: 5;">
 
-                    <!-- Layer 6: Main House/Element (User Request: houded2) -->
-                    <img src="./City/Bright/houded2.png"
-                        class="city-layer absolute bottom-0 left-1/2 -translate-x-1/2 w-[80%] md:w-[60%] object-contain object-bottom"
-                        data-speed="0.5" style="z-index: 6;">
+
 
                     <!-- Gradient Overlay to blend with dark theme -->
                     <div class="absolute inset-0 bg-gradient-to-b from-void-black/30 via-transparent to-void-black/90"
